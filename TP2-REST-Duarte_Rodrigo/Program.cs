@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<CineContext>(options =>
 {
-    options.UseSqlServer("Server=localhost;Database=rokopop2;Trusted_Connection=True;TrustServerCertificate=True;Persist Security Info=true");
+    options.UseSqlServer("Server=localhost;Database=rokopop2DB;Trusted_Connection=True;TrustServerCertificate=True;Persist Security Info=true");
 });
 
 

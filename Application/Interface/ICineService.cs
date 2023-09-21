@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Application.Model;
+using Domain.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +10,6 @@ namespace Application.Interface
 {
     public interface ICineService
     {
+        Task<List<PeliculaDTO>> getPeliculas();
     }
 }

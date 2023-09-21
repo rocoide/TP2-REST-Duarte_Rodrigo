@@ -1,4 +1,6 @@
 ﻿using Application.Interface;
+using Application.Model;
+using Domain.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,10 @@ namespace Application.UseCase
             _query = query;
         }
 
-
+        public async Task<List<PeliculaDTO>> getPeliculas() 
+        {
+            List<PeliculaDTO> peliculas = await _query.getPeliculas();
+            return peliculas;
+        }
     }
 }

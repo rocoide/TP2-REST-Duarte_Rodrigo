@@ -1,4 +1,7 @@
 ﻿using Application.Interface;
+using Application.Model;
+using Domain.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +18,6 @@ namespace Infrastructure.Command
         {
             _context = context;
         }
+
     }
 }
