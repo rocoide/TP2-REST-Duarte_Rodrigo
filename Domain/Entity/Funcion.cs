@@ -13,8 +13,8 @@ namespace Domain.Entity
     public class Funcion
     {
         [Key]
+        [Column(Order = 1)]
         public int FuncionId { get; set; }
-
 
         [Column(Order = 4)]
         public DateTime Fecha { get; set; }
@@ -22,19 +22,13 @@ namespace Domain.Entity
         [Column(Order = 5)]
         public DateTime Horario { get; set; }
 
-
-
-
         [Column("PeliculaId", Order = 2)]
         public int PeliculaId { get; set; }
         public Pelicula Peliculas { get; set; }
 
-
-
         [Column("SalaId", Order = 3)]
         public int SalaId { get; set; }
         public Sala Salas { get; set; }
-
 
         public ICollection<Ticket> Tickets { get; set; }
 

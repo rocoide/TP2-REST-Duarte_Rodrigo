@@ -10,6 +10,7 @@ namespace Domain.Entity
     [Table("Tickets")]
     public class Ticket
     {
+        [Column(Order = 1)]
         public Guid TicketId { get; set; }
 
         [Column(Order = 3, TypeName = "nvarchar(50)")]

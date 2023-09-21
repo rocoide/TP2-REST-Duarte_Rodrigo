@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interface
 {
-    public interface IQuery
+    public interface ICineService
     {
     }
 }

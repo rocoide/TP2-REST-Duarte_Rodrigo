@@ -12,10 +12,11 @@ namespace Infrastructure
 {
     public class CineContext :DbContext
     {
-        public CineContext() : base()
+        public CineContext(DbContextOptions<CineContext> options) : base(options)
         {
-
         }
+
+        public CineContext() : base() { }
 
         public DbSet<Funcion> Funciones { get; set; }
         public DbSet<Genero> Generos { get; set; }
@@ -293,7 +294,7 @@ namespace Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-SC0U42I\SQLEXPRESS;Database=rokopop2DB;Trusted_Connection=True;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer("Server=localhost;Database=rokopop2;Trusted_Connection=True;TrustServerCertificate=True");
         }
 
     }
