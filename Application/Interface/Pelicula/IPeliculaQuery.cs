@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interface
+namespace Application.Interface.Pelicula
 {
-    public interface ICineQuery
+    public interface IPeliculaQuery
     {
         Task<List<PeliculaDTO>> getPeliculas();
+        Task<PeliculaDTO> getPelicula(int id);
     }
 }

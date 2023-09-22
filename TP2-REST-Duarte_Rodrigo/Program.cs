@@ -1,4 +1,5 @@
-using Application.Interface;
+using Application.Interface.Funciones;
+using Application.Interface.Pelicula;
 using Application.UseCase;
 using Infrastructure;
 using Infrastructure.Command;
@@ -23,9 +24,13 @@ builder.Services.AddDbContext<CineContext>(options =>
 });
 
 
-builder.Services.AddTransient<ICineService, CineService>();
-builder.Services.AddTransient<ICineCommand, CineCommand>();
-builder.Services.AddTransient<ICineQuery, CineQuery>();
+builder.Services.AddTransient<IPeliculaService, PeliculaService>();
+builder.Services.AddTransient<IPeliculaCommand, PeliculaCommand>();
+builder.Services.AddTransient<IPeliculaQuery, PeliculaQuery>();
+
+builder.Services.AddTransient<IFuncionService, FuncionService>();
+builder.Services.AddTransient<IFuncionCommand, FuncionCommand>();
+builder.Services.AddTransient<IFuncionQuery, FuncionQuery>();
 
 var app = builder.Build();
 

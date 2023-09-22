@@ -1,4 +1,4 @@
-﻿using Application.Interface;
+﻿using Application.Interface.Pelicula;
 using Application.Model;
 using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Command
 {
-    public class CineCommand : ICineCommand
+    public class PeliculaCommand : IPeliculaCommand
     {
         private readonly CineContext _context;
 
-        public CineCommand(CineContext context)
+        public PeliculaCommand(CineContext context)
         {
             _context = context;
         }

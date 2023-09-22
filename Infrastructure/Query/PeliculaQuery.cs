@@ -1,4 +1,4 @@
-﻿using Application.Interface;
+﻿using Application.Interface.Pelicula;
 using Application.Model;
 using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Query
 {
-    public class CineQuery : ICineQuery
+    public class PeliculaQuery : IPeliculaQuery
     {
         private readonly CineContext _context;
 
-        public CineQuery(CineContext context) 
+        public PeliculaQuery(CineContext context) 
         {
             _context = context;
         }
@@ -33,6 +33,21 @@ namespace Infrastructure.Query
                                                                                 })
                                                                                 .ToList();
             return peliculas;
+        }
+
+        public async Task<PeliculaDTO> getPelicula(int id) 
+        {
+            Pelicula? pelicula = _context.Peliculas
+                                                           .Include(f => f.Generos)
+                                                           .FirstOrDefault(s => s.PeliculaId == id);
+            PeliculaDTO peliculaDTO = new PeliculaDTO{
+                                                                Titulo = pelicula.Titulo,
+                                                                Sinopsis = pelicula.Sinopsis,
+                                                                Poster = pelicula.Poster,
+                                                                Trailer = pelicula.Trailer,
+                                                                Genero = pelicula.Generos.Nombre
+                                                                            };
+            return peliculaDTO;
         }
     }
 }

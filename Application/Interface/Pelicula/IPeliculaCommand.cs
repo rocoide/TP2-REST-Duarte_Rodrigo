@@ -6,10 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interface
+namespace Application.Interface.Pelicula
 {
-    public interface ICineService
+    public interface IPeliculaCommand
     {
-        Task<List<PeliculaDTO>> getPeliculas();
     }
 }

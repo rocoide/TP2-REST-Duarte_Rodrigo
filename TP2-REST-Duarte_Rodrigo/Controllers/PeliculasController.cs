@@ -1,4 +1,4 @@
-﻿using Application.Interface;
+﻿using Application.Interface.Pelicula;
 using Application.Model;
 using Domain.Entity;
 using Infrastructure;
@@ -11,9 +11,9 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
     [ApiController]
     public class PeliculasController : ControllerBase
     {
-        private readonly ICineService _service;
+        private readonly IPeliculaService _service;
 
-        public PeliculasController(ICineService service) 
+        public PeliculasController(IPeliculaService service) 
         {
             _service = service;
         }
@@ -22,6 +22,13 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
         public async Task<IActionResult> getPeliculas() 
         {
             List<PeliculaDTO> result = await _service.getPeliculas();
+            return new JsonResult(result);
+        }
+
+        [HttpGet("Pelicula/{id}")]
+        public async Task<IActionResult> getPelicula(int id) 
+        {
+            PeliculaDTO result = await _service.getPelicula(id);
             return new JsonResult(result);
         }
     }

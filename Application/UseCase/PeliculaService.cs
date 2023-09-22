@@ -1,4 +1,4 @@
-﻿using Application.Interface;
+﻿using Application.Interface.Pelicula;
 using Application.Model;
 using Domain.Entity;
 using System;
@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Application.UseCase
 {
-    public class CineService : ICineService
+    public class PeliculaService : IPeliculaService
     {
-        private readonly ICineCommand _command;
-        private readonly ICineQuery _query;
+        private readonly IPeliculaCommand _command;
+        private readonly IPeliculaQuery _query;
 
-        public CineService (ICineCommand command, ICineQuery query) 
+        public PeliculaService (IPeliculaCommand command, IPeliculaQuery query) 
         {
             _command = command;
             _query = query;
@@ -24,6 +24,12 @@ namespace Application.UseCase
         {
             List<PeliculaDTO> peliculas = await _query.getPeliculas();
             return peliculas;
+        }
+
+        public async Task<PeliculaDTO> getPelicula(int id) 
+        {
+            PeliculaDTO pelicula = await _query.getPelicula(id);
+            return pelicula;
         }
     }
 }

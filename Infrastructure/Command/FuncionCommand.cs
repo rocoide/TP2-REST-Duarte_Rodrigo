@@ -1,14 +1,13 @@
-﻿using Application.Model;
-using Domain.Entity;
+﻿using Application.Interface.Funciones;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interface
+namespace Infrastructure.Command
 {
-    public interface ICineCommand
+    public class FuncionCommand : IFuncionCommand
     {
     }
 }
