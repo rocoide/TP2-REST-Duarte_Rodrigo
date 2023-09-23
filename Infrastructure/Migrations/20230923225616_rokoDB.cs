@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class rokopop2DB : Migration
+    public partial class rokoDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,7 +72,7 @@ namespace Infrastructure.Migrations
                     PeliculaId = table.Column<int>(type: "int", nullable: false),
                     SalaId = table.Column<int>(type: "int", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Horario = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Horario = table.Column<TimeSpan>(type: "time", nullable: false)
                 },
                 constraints: table =>
                 {

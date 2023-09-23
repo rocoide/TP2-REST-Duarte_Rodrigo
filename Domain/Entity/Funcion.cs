@@ -20,7 +20,7 @@ namespace Domain.Entity
         public DateTime Fecha { get; set; }
 
         [Column(Order = 5)]
-        public DateTime Horario { get; set; }
+        public TimeSpan Horario { get; set; }
 
         [Column("PeliculaId", Order = 2)]
         public int PeliculaId { get; set; }

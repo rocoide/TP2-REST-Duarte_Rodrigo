@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(CineContext))]
-    [Migration("20230921195044_rokopop2DB")]
-    partial class rokopop2DB
+    [Migration("20230923225616_rokoDB")]
+    partial class rokoDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,8 +38,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnOrder(4);
 
-                    b.Property<DateTime>("Horario")
-                        .HasColumnType("datetime2")
+                    b.Property<TimeSpan>("Horario")
+                        .HasColumnType("time")
                         .HasColumnOrder(5);
 
                     b.Property<int>("PeliculaId")

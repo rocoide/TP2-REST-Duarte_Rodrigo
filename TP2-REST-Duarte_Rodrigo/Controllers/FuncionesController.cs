@@ -1,5 +1,6 @@
 ﻿using Application.Interface.Funciones;
 using Application.Model;
+using Domain.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -55,7 +56,26 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             return new JsonResult(listaFinal);
         }
 
-        //[HttpPost("funciones")]
-        //public async 
+        
+        [HttpPost("funcion")]
+        public async Task<IActionResult> getFunciones(FuncionIdDTO funcion) 
+        {
+            Funcion fun = new Funcion
+             {
+                Fecha = DateTime.Parse(funcion.Fecha),
+                Horario = TimeSpan.Parse(funcion.Horario),
+                SalaId = funcion.SalaId,
+                PeliculaId = funcion.PeliculaId
+             };
+            bool resultado = await _service.AddFuncion(fun);
+            if (resultado) 
+            {
+                return Ok("Se agrego correctamente la funcion.");
+            }
+            else 
+            {
+                return BadRequest("No se pudo agregar correctamente la funcion.");
+            }
+        }
     }
 }

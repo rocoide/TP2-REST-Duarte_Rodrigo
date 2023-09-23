@@ -35,8 +35,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnOrder(4);
 
-                    b.Property<DateTime>("Horario")
-                        .HasColumnType("datetime2")
+                    b.Property<TimeSpan>("Horario")
+                        .HasColumnType("time")
                         .HasColumnOrder(5);
 
                     b.Property<int>("PeliculaId")

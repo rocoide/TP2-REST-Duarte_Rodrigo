@@ -1,5 +1,6 @@
 ﻿using Application.Interface.Funciones;
 using Application.Model;
+using Domain.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,11 @@ namespace Application.UseCase
         {
             List<FuncionDTO> funciones = await _query.getFuncionesByGenero(generoID);
             return funciones;
+        }
+
+        public Task<bool> AddFuncion(Funcion fun) 
+        {
+            return (_command.AddFuncion(fun));
         }
     }
 }
