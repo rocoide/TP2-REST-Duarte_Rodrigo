@@ -1,5 +1,6 @@
 ﻿using Application.Model;
 using Domain.Entity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,6 @@ namespace Application.Interface.Funciones
         Task<List<FuncionDTO>> getFuncionesByGenero(int? generoID);
         Task<List<FuncionDTO>> compararDTO(List<FuncionDTO> funcion1, List<FuncionDTO> funcion2);
         Task<bool> AddFuncion(Funcion fun);
+        Task<bool> removeFuncion(int funcionID);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Application.Interface.Funciones;
 using Domain.Entity;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +46,18 @@ namespace Infrastructure.Command
             {
                 return false;
             }
+        }
+
+        public async Task<bool> removeFuncion(int funcionID) 
+        {
+            Funcion funcion = await _context.Funciones.FindAsync(funcionID);
+            if (funcion != null)
+            {
+                _context.Funciones.Remove(funcion);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
     }
 }

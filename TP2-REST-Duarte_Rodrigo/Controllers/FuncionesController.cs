@@ -90,5 +90,22 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
                 return BadRequest("No se pudo agregar correctamente la funcion.");
             }
         }
+
+
+
+
+        [HttpDelete("funcion")]
+        public async Task<IActionResult> removeFuncion(int funcionID) 
+        {
+            bool resultado = await _service.removeFuncion(funcionID);
+            if (resultado) 
+            {
+                return Ok("Se elimino correctamente la funcion.");
+            }
+            else 
+            {
+                return BadRequest("No se encontre el ID a eliminar.");
+            }
+        }
     }
 }
