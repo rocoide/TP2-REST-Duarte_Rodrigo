@@ -97,14 +97,21 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
         [HttpDelete("funcion")]
         public async Task<IActionResult> removeFuncion(int funcionID)
         {
-            bool resultado = await _service.removeFuncion(funcionID);
-            if (resultado)
+            int? resultado = await _service.removeFuncion(funcionID);
+            if (resultado == null)
             {
-                return Ok("Se elimino correctamente la funcion.");
+                return BadRequest("No se encontre la funcion a eliminar.");
             }
             else
             {
-                return BadRequest("No se encontre el ID a eliminar.");
+                if (resultado == 0) 
+                {
+                    return Ok("Se elimino la funcion correctamente.");
+                }
+                else 
+                {
+                    return BadRequest("No se pudo eliminar la funcion debido a que tiene tickets vendidos.");
+                }
             }
         }
 
@@ -116,7 +123,7 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             {
                 return NotFound("No existe la funcion solicitada.");
             }
-            string res = "hay " + resultado + "tickets disponibles para la funcion " + funcionID;
+            string res = "hay " + resultado + " tickets disponibles para la funcion " + funcionID;
             return new JsonResult(res) {StatusCode = 200};
         }
 

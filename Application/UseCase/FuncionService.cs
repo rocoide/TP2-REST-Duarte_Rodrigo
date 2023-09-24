@@ -65,7 +65,7 @@ namespace Application.UseCase
             return (_command.AddFuncion(fun));
         }
 
-        public async Task<bool> removeFuncion(int funcionID) 
+        public async Task<int?> removeFuncion(int funcionID) 
         {
            return await _command.removeFuncion(funcionID);
         }

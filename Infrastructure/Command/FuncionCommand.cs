@@ -25,17 +25,15 @@ namespace Infrastructure.Command
             TimeSpan aux = fun.Horario + TimeSpan.FromHours(-2) + TimeSpan.FromMinutes(-30); //auxiliar para simular la comparacion con el fin de las peliculas en cartelera
             TimeSpan hora_fin = fun.Horario.Add(tiempo_agregado);
             List<Funcion> funciones = _context.Funciones
-                                                                .Where(f => (f.SalaId == fun.SalaId) && 
-                                                                                    (f.Fecha.Month == fun.Fecha.Month) && 
-                                                                                    (f.Fecha.Day == fun.Fecha.Day) &&
-                                                                                    (
-                                                                                        (
-                                                                                            (f.Horario >= fun.Horario && f.Horario < hora_fin) ||
-                                                                                            (f.Horario <= fun.Horario && f.Horario > aux)
-                                                                                        )
-                                                                                    )
-                                                                            )
-                                                                .ToList();
+                                              .Where(f => (f.SalaId == fun.SalaId) && 
+                                                          (f.Fecha.Month == fun.Fecha.Month) && 
+                                                          (f.Fecha.Day == fun.Fecha.Day) &&
+                                                          (
+                                                            (f.Horario >= fun.Horario && f.Horario < hora_fin) ||
+                                                            (f.Horario <= fun.Horario && f.Horario > aux)
+                                                          )
+                                                    )
+                                              .ToList();
             if (funciones.Count == 0) 
             {
                 _context.Funciones.Add(fun);
@@ -48,16 +46,29 @@ namespace Infrastructure.Command
             }
         }
 
-        public async Task<bool> removeFuncion(int funcionID) 
+        public async Task<int?> removeFuncion(int funcionID) 
         {
-            Funcion funcion = await _context.Funciones.FindAsync(funcionID);
-            if (funcion != null)
+            Funcion? funcion = await _context.Funciones.FindAsync(funcionID);
+            List<Ticket> lista_tickets = await _context.Tickets
+                                                       .Where(s => s.FuncionId == funcionID)
+                                                       .ToListAsync();
+            if ((funcion != null) && (lista_tickets.Count == 0))
             {
                 _context.Funciones.Remove(funcion);
                 _context.SaveChanges();
-                return true;
+                return lista_tickets.Count;
             }
-            return false;
+            else 
+            {
+                if(funcion == null) 
+                {
+                    return null;
+                }
+                else 
+                {
+                    return lista_tickets.Count;
+                }
+            }
         }
     }
 }

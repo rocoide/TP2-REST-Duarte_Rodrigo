@@ -11,6 +11,6 @@ namespace Application.Interface.Funciones
     public interface IFuncionCommand
     {
         Task<bool> AddFuncion(Funcion fun);
-        Task<bool> removeFuncion(int funcionID);
+        Task<int?> removeFuncion(int funcionID);
     }
 }

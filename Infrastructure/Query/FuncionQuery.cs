@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Infrastructure.Query
 {
@@ -22,75 +23,79 @@ namespace Infrastructure.Query
         public async Task<List<FuncionDTO>> getAllFunciones() 
         {
             List<FuncionDTO> funciones = await _context.Funciones
-                                                                       .Include(s => s.Salas)
-                                                                       .Include(f => f.Peliculas)
-                                                                          .ThenInclude(m => m.Generos)
-                                                                       .Select(s => new FuncionDTO
-                                                                       {
-                                                                           Fecha = s.Fecha.ToString(),
-                                                                           Horario = s.Horario.ToString(),
-                                                                           PeliculaNombre = s.Peliculas.Titulo,
-                                                                           PeliculaGenero = s.Peliculas.Generos.Nombre,
-                                                                           SalaNombre = s.Salas.Nombre
-                                                                       })
-                                                                       .ToListAsync();
+                                                       .Include(s => s.Salas)
+                                                       .Include(f => f.Peliculas)
+                                                           .ThenInclude(m => m.Generos)
+                                                       .Select(s => new FuncionDTO
+                                                       {
+                                                           Fecha = s.Fecha.ToString("dd/MM/yyyy"),
+                                                           Horario = s.Horario.ToString(@"hh\:mm"),
+                                                           Dia = s.Fecha.ToString("dddd"),
+                                                           PeliculaNombre = s.Peliculas.Titulo,
+                                                           PeliculaGenero = s.Peliculas.Generos.Nombre,
+                                                           SalaNombre = s.Salas.Nombre
+                                                       })
+                                                       .ToListAsync();
             return funciones;
         }
 
         public async Task<List<FuncionDTO>> getFuncionesByTitulo(string titu) 
         {
             List<FuncionDTO> funciones = await _context.Funciones
-                                                                       .Include(s => s.Salas)
-                                                                       .Include(f => f.Peliculas)
-                                                                          .ThenInclude(m => m.Generos)
-                                                                       .Where(f => f.Peliculas.Titulo.Contains(titu))
-                                                                       .Select(s => new FuncionDTO
-                                                                       {
-                                                                           Fecha = s.Fecha.ToString(),
-                                                                           Horario = s.Horario.ToString(),
-                                                                           PeliculaNombre = s.Peliculas.Titulo,
-                                                                           PeliculaGenero = s.Peliculas.Generos.Nombre,
-                                                                           SalaNombre = s.Salas.Nombre
-                                                                       })
-                                                                       .ToListAsync();
+                                                       .Include(s => s.Salas)
+                                                       .Include(f => f.Peliculas)
+                                                           .ThenInclude(m => m.Generos)
+                                                       .Where(f => f.Peliculas.Titulo.Contains(titu))
+                                                       .Select(s => new FuncionDTO
+                                                       {
+                                                           Fecha = s.Fecha.ToString("dd/MM/yyyy"),
+                                                           Horario = s.Horario.ToString(@"hh\:mm"),
+                                                           Dia = s.Fecha.ToString("dddd"),
+                                                           PeliculaNombre = s.Peliculas.Titulo,
+                                                           PeliculaGenero = s.Peliculas.Generos.Nombre,
+                                                           SalaNombre = s.Salas.Nombre
+                                                       })
+                                                       .ToListAsync();
             return funciones;
         }
 
         public async Task<List<FuncionDTO>> getFuncionesByFecha(DateTime fecha) 
         {
             List<FuncionDTO> funciones = await _context.Funciones
-                                                                       .Include(s => s.Salas)
-                                                                       .Include(f => f.Peliculas)
-                                                                          .ThenInclude(m => m.Generos)
-                                                                       .Where(f => (f.Fecha.Day == fecha.Day) && (f.Fecha.Month == fecha.Month))
-                                                                       .Select(s => new FuncionDTO
-                                                                       {
-                                                                           Fecha = s.Fecha.ToString(),
-                                                                           Horario = s.Horario.ToString(),
-                                                                           PeliculaNombre = s.Peliculas.Titulo,
-                                                                           PeliculaGenero = s.Peliculas.Generos.Nombre,
-                                                                           SalaNombre = s.Salas.Nombre
-                                                                       })
-                                                                       .ToListAsync();
+                                                       .Include(s => s.Salas)
+                                                       .Include(f => f.Peliculas)
+                                                           .ThenInclude(m => m.Generos)
+                                                       .Where(f => (f.Fecha.Day == fecha.Day) && (f.Fecha.Month == fecha.Month))
+                                                       .Select(s => new FuncionDTO
+                                                       {
+                                                           Fecha = s.Fecha.ToString("dd/MM/yyyy"),
+                                                           Horario = s.Horario.ToString(@"hh\:mm"),
+                                                           Dia = s.Fecha.ToString("dddd"),
+                                                           PeliculaNombre = s.Peliculas.Titulo,
+                                                           PeliculaGenero = s.Peliculas.Generos.Nombre,
+                                                           SalaNombre = s.Salas.Nombre
+                                                       })
+                                                       .ToListAsync();
             return funciones;
         }
 
         public async Task<List<FuncionDTO>> getFuncionesByGenero(int? generoID) 
         {
             List<FuncionDTO> funciones = await _context.Funciones
-                                                                       .Include(s => s.Salas)
-                                                                       .Include(f => f.Peliculas)
-                                                                          .ThenInclude(m => m.Generos)
-                                                                       .Where(f => f.Peliculas.GeneroId == generoID)
-                                                                       .Select(s => new FuncionDTO
-                                                                       {
-                                                                           Fecha = s.Fecha.ToString(),
-                                                                           Horario = s.Horario.ToString(),
-                                                                           PeliculaNombre = s.Peliculas.Titulo,
-                                                                           PeliculaGenero = s.Peliculas.Generos.Nombre,
-                                                                           SalaNombre = s.Salas.Nombre
-                                                                       })
-                                                                       .ToListAsync();
+                                                       .Include(s => s.Salas)
+                                                       .Include(f => f.Peliculas)
+                                                           .ThenInclude(m => m.Generos)
+                                                       .Where(f => f.Peliculas.GeneroId == generoID)
+                                                       .Select(s => new FuncionDTO
+                                                       {
+                                                           Fecha = s.Fecha.ToString("dd/MM/yyyy"),
+                                                           Horario = s.Horario.ToString(@"hh\:mm"),
+                                                           Dia = s.Fecha.ToString("dddd"),
+                                                           PeliculaNombre = s.Peliculas.Titulo,
+                                                           PeliculaGenero = s.Peliculas.Generos.Nombre,
+                                                           SalaNombre = s.Salas.Nombre
+                                                       })
+                                                       .ToListAsync();
             return funciones;
         }
 

@@ -17,7 +17,7 @@ namespace Application.Interface.Funciones
         Task<List<FuncionDTO>> getFuncionesByGenero(int? generoID);
         Task<List<FuncionDTO>> compararDTO(List<FuncionDTO> funcion1, List<FuncionDTO> funcion2);
         Task<bool> AddFuncion(Funcion fun);
-        Task<bool> removeFuncion(int funcionID);
+        Task<int?> removeFuncion(int funcionID);
         Task<int?> getCantTicketsDisponibles(int funcionID);
         Task<FuncionDTO> getFuncionByID(int funcionID);
     }
