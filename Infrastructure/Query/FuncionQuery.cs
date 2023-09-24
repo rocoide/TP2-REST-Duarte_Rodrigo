@@ -111,5 +111,29 @@ namespace Infrastructure.Query
             }
             return resultado;
         }
+
+        public async Task<FuncionDTO> getFuncionByID(int funcionID) 
+        {
+            Funcion? funcion = await _context.Funciones
+                                            .Include(m => m.Salas)
+                                            .Include(t => t.Tickets)
+                                            .Include(f => f.Peliculas)
+                                                .ThenInclude(m => m.Generos)
+                                            .FirstOrDefaultAsync(s => s.FuncionId == funcionID);
+            if (funcion != null) 
+            {
+                FuncionDTO funcionDTO = new FuncionDTO
+                {
+                    Fecha = funcion.Fecha.ToString("dd/MM/yyyy"),
+                    Horario = funcion.Horario.ToString(@"hh\:mm"),
+                    Dia = funcion.Fecha.ToString("dddd"),
+                    SalaNombre = funcion.Salas.Nombre,
+                    PeliculaNombre = funcion.Peliculas.Titulo,
+                    PeliculaGenero = funcion.Peliculas.Generos.Nombre
+                };
+                return funcionDTO;
+            }
+            return null;
+        }
     }
 }

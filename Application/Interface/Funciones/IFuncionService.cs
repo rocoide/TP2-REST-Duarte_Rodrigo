@@ -19,5 +19,6 @@ namespace Application.Interface.Funciones
         Task<bool> AddFuncion(Funcion fun);
         Task<bool> removeFuncion(int funcionID);
         Task<int?> getCantTicketsDisponibles(int funcionID);
+        Task<FuncionDTO> getFuncionByID(int funcionID);
     }
 }

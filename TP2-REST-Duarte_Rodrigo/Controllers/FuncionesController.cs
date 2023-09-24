@@ -120,7 +120,19 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             return new JsonResult(res) {StatusCode = 200};
         }
 
-        
+        [HttpGet("funcion/{funcionID}")]
+        public async Task<IActionResult> getFuncionByID(int funcionID) 
+        {
+            FuncionDTO? funcionDTO = await _service.getFuncionByID(funcionID);
+            if (funcionDTO == null) 
+            {
+                return NotFound("Funcion no encontrada.");
+            }
+            else 
+            {
+                return new JsonResult(funcionDTO) { StatusCode = 200 };
+            }
+        }
 
     }
 }

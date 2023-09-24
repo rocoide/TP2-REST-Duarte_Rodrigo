@@ -76,5 +76,10 @@ namespace Application.UseCase
             return resultado;
         }
 
+        public async Task<FuncionDTO> getFuncionByID(int funcionID) 
+        {
+            return await _query.getFuncionByID(funcionID);
+        }
+
     }
 }
