@@ -70,5 +70,11 @@ namespace Application.UseCase
            return await _command.removeFuncion(funcionID);
         }
 
+        public async Task<int?> getCantTicketsDisponibles(int funcionID) 
+        {
+            int? resultado = await _query.getCantTicketsDisponibles(funcionID);
+            return resultado;
+        }
+
     }
 }

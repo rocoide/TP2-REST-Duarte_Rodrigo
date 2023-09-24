@@ -1,5 +1,6 @@
 ﻿using Application.Interface.Funciones;
 using Application.Model;
+using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -91,6 +92,24 @@ namespace Infrastructure.Query
                                                                        })
                                                                        .ToListAsync();
             return funciones;
+        }
+
+        public async Task<int?> getCantTicketsDisponibles(int funcionID) 
+        {
+            int resultado;
+            Funcion funcion = _context.Funciones.Include(m => m.Salas).FirstOrDefault(s => s.FuncionId == funcionID);
+            if (funcion == null)
+            {
+                return null;
+            }
+            else
+            {
+                List<Ticket> lista_tickets = _context.Tickets
+                                                     .Where(s => s.FuncionId == funcionID)
+                                                     .ToList();
+                resultado = (funcion.Salas.Capacidad - lista_tickets.Count);
+            }
+            return resultado;
         }
     }
 }

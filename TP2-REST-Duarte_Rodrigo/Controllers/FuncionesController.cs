@@ -71,21 +71,21 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
 
 
         [HttpPost("funcion")]
-        public async Task<IActionResult> AddFuncion(FuncionIdDTO funcion) 
+        public async Task<IActionResult> AddFuncion(FuncionIdDTO funcion)
         {
             Funcion fun = new Funcion
-             {
+            {
                 Fecha = DateTime.Parse(funcion.Fecha),
                 Horario = TimeSpan.Parse(funcion.Horario),
                 SalaId = funcion.SalaId,
                 PeliculaId = funcion.PeliculaId
-             };
+            };
             bool resultado = await _service.AddFuncion(fun);
-            if (resultado) 
+            if (resultado)
             {
                 return Ok("Se agrego correctamente la funcion.");
             }
-            else 
+            else
             {
                 return BadRequest("No se pudo agregar correctamente la funcion.");
             }
@@ -95,17 +95,32 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
 
 
         [HttpDelete("funcion")]
-        public async Task<IActionResult> removeFuncion(int funcionID) 
+        public async Task<IActionResult> removeFuncion(int funcionID)
         {
             bool resultado = await _service.removeFuncion(funcionID);
-            if (resultado) 
+            if (resultado)
             {
                 return Ok("Se elimino correctamente la funcion.");
             }
-            else 
+            else
             {
                 return BadRequest("No se encontre el ID a eliminar.");
             }
         }
+
+        [HttpGet("ticketsParaFuncion/{funcionID}")]
+        public async Task<IActionResult> getCantTicketsDisponibles (int funcionID) 
+        {
+            int? resultado = await _service.getCantTicketsDisponibles(funcionID);
+            if (resultado == null)
+            {
+                return NotFound("No existe la funcion solicitada.");
+            }
+            string res = "hay " + resultado + "tickets disponibles para la funcion " + funcionID;
+            return new JsonResult(res) {StatusCode = 200};
+        }
+
+        
+
     }
 }
