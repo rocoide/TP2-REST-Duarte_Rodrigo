@@ -1,4 +1,4 @@
-﻿using Application.Interface.Pelicula;
+﻿using Application.Interface.Peliculas;
 using Application.Model;
 using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +17,23 @@ namespace Infrastructure.Command
         public PeliculaCommand(CineContext context)
         {
             _context = context;
+        }
+
+        public async Task<bool> updatePelicula(Pelicula pelicula) 
+        {
+            Pelicula peli = await _context.Peliculas.FindAsync(pelicula.PeliculaId);
+            if (peli != null)
+            {
+                peli.Titulo = pelicula.Titulo;
+                peli.Sinopsis = pelicula.Sinopsis;
+                peli.Poster = pelicula.Poster;
+                peli.Trailer = pelicula.Trailer;
+                peli.GeneroId = pelicula.GeneroId;
+                _context.Peliculas.Update(peli);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
     }

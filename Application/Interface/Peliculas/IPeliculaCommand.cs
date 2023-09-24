@@ -6,9 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interface.Pelicula
+namespace Application.Interface.Peliculas
 {
     public interface IPeliculaCommand
     {
+        Task<bool> updatePelicula(Pelicula pelicula);
     }
 }

@@ -12,5 +12,6 @@ namespace Application.Model
         public string Horario { get; set; }
         public int PeliculaId { get; set; }
         public int SalaId { get; set; }
+        public int generoId { get; set; }
     }
 }

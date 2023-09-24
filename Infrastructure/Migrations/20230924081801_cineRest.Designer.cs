@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(CineContext))]
-    [Migration("20230923225616_rokoDB")]
-    partial class rokoDB
+    [Migration("20230924081801_cineRest")]
+    partial class cineRest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

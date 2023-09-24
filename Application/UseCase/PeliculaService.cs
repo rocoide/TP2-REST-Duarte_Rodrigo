@@ -1,4 +1,4 @@
-﻿using Application.Interface.Pelicula;
+﻿using Application.Interface.Peliculas;
 using Application.Model;
 using Domain.Entity;
 using System;
@@ -31,5 +31,22 @@ namespace Application.UseCase
             PeliculaDTO pelicula = await _query.getPelicula(id);
             return pelicula;
         }
+
+        public async Task<bool> updatePelicula(PeliculaIdDTO peliculaIdDTO) 
+        {
+            Pelicula pelicula = new Pelicula 
+            {
+                PeliculaId = peliculaIdDTO.PeliculaId,
+                Titulo = peliculaIdDTO.Titulo,
+                Sinopsis = peliculaIdDTO.Sinopsis,
+                Poster = peliculaIdDTO.Poster,
+                Trailer =  peliculaIdDTO.Trailer,
+                GeneroId = peliculaIdDTO.GeneroId
+            };
+            return await _command.updatePelicula(pelicula);
+            
+        }
+
+
     }
 }

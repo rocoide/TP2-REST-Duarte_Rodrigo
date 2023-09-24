@@ -1,4 +1,4 @@
-﻿using Application.Interface.Pelicula;
+﻿using Application.Interface.Peliculas;
 using Application.Model;
 using Domain.Entity;
 using Infrastructure;
@@ -30,6 +30,17 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
         {
             PeliculaDTO result = await _service.getPelicula(id);
             return new JsonResult(result);
+        }
+
+        [HttpPut("Pelicula")]
+        public async Task<IActionResult> updatePelicula(PeliculaIdDTO peliculaIdDTO)
+        {
+            bool resultado = await _service.updatePelicula(peliculaIdDTO);
+            if (resultado) 
+            {
+                return new JsonResult("Se ha actualizado la pelicula correctamente") {StatusCode = 201};
+            }
+            return NotFound("No se ha encontrado la pelicula");
         }
     }
 }

@@ -71,7 +71,7 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
 
 
         [HttpPost("funcion")]
-        public async Task<IActionResult> getFunciones(FuncionIdDTO funcion) 
+        public async Task<IActionResult> AddFuncion(FuncionIdDTO funcion) 
         {
             Funcion fun = new Funcion
              {
