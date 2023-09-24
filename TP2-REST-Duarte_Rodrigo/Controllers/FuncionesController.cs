@@ -19,44 +19,57 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             _service = service;
         }
 
+
+
+
         [HttpGet("funciones")]
         public async Task<IActionResult> getFunciones(string titulo = null, string fecha = null, int? generoID = null)
-        { 
+        {
+            List<FuncionDTO> lista = null;
             //sin filtro, devuelve todas las funciones
             if ((titulo == null) && (fecha == null) && (generoID == null))
             {
-                List<FuncionDTO> lista = await _service.getAllFunciones();
+                lista = await _service.getAllFunciones();
                 return new JsonResult(lista);
             }
-            List<FuncionDTO> lista1 = null;
-            List<FuncionDTO> lista2 = null;
-            List<FuncionDTO> lista3 = null;
+            //caso sin filtros funciona bien
             List<FuncionDTO> listaFinal = null;
-            if (titulo != null) 
+            if (titulo != null)
             {
-                lista1 = await _service.getFuncionesByTitulo(titulo);
+                lista = await _service.getFuncionesByTitulo(titulo);
+                listaFinal = lista;
             }
-            if (fecha != null) 
+            if (fecha != null)
             {
                 DateTime fech = DateTime.Parse(fecha);
-                lista2 = await _service.getFuncionesByFecha(fech);
-                if (lista1 != null) 
+                lista = await _service.getFuncionesByFecha(fech);
+                if (listaFinal != null)
                 {
-                    listaFinal = lista1.Intersect(lista2).ToList();
+                    listaFinal = await _service.compararDTO(listaFinal, lista);
+                }
+                else
+                {
+                    listaFinal = lista;
                 }
             }
-            if (generoID != null) 
+            if (generoID != null)
             {
-                lista3 = await _service.getFuncionesByGenero(generoID);
-                if (listaFinal != null) 
+                lista = await _service.getFuncionesByGenero(generoID);
+                if (listaFinal != null)
                 {
-                    listaFinal = listaFinal.Intersect(lista3).ToList();
+                    listaFinal = await _service.compararDTO(listaFinal, lista);
+                }
+                else
+                {
+                    listaFinal = lista;
                 }
             }
             return new JsonResult(listaFinal);
         }
 
-        
+
+
+
         [HttpPost("funcion")]
         public async Task<IActionResult> getFunciones(FuncionIdDTO funcion) 
         {

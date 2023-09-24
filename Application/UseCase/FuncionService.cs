@@ -44,6 +44,22 @@ namespace Application.UseCase
             return funciones;
         }
 
+        public async Task<List<FuncionDTO>> compararDTO(List<FuncionDTO> funcion1, List<FuncionDTO> funcion2)
+        {
+            List<FuncionDTO> lista = new List<FuncionDTO>();
+            foreach (FuncionDTO fun2 in funcion2)
+            {
+                foreach (FuncionDTO fun1 in funcion1)
+                {
+                    if ((fun2.PeliculaGenero == fun1.PeliculaGenero) && (fun2.PeliculaNombre == fun1.PeliculaNombre) && (fun2.SalaNombre == fun1.SalaNombre) && (fun2.Fecha == fun1.Fecha) && (fun2.Horario == fun1.Horario))
+                    {
+                        lista.Add(fun1);
+                    }
+                }
+            }
+            return lista;
+        }
+
         public Task<bool> AddFuncion(Funcion fun) 
         {
             return (_command.AddFuncion(fun));

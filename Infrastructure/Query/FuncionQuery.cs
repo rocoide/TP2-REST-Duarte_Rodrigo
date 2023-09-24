@@ -42,7 +42,7 @@ namespace Infrastructure.Query
                                                                        .Include(s => s.Salas)
                                                                        .Include(f => f.Peliculas)
                                                                           .ThenInclude(m => m.Generos)
-                                                                       .Where(f => f.Peliculas.Titulo == titu)
+                                                                       .Where(f => f.Peliculas.Titulo.Contains(titu))
                                                                        .Select(s => new FuncionDTO
                                                                        {
                                                                            Fecha = s.Fecha.ToString(),
