@@ -1,4 +1,5 @@
-﻿using Application.Model;
+﻿using Application.Model.DTO;
+using Application.Model.Response;
 using Domain.Entity;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ namespace Application.Interface.Funciones
 {
     public interface IFuncionQuery
     {
-        Task<List<FuncionDTO>> getAllFunciones();
-        Task<List<FuncionDTO>> getFuncionesByTitulo(string titu);
-        Task<List<FuncionDTO>> getFuncionesByFecha(DateTime fecha);
-        Task<List<FuncionDTO>> getFuncionesByGenero(int? generoID);
+        Task<List<FuncionResponse>> getAllFunciones();
+        Task<List<FuncionResponse>> getFuncionesByTitulo(string titu);
+        Task<List<FuncionResponse>> getFuncionesByFecha(DateTime fecha);
+        Task<List<FuncionResponse>> getFuncionesByGenero(int? generoID);
         Task<int?> getCantTicketsDisponibles(int funcionID);
         Task<FuncionDTO> getFuncionByID(int funcionID);
     }

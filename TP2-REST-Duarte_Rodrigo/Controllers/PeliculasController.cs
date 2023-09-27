@@ -1,5 +1,5 @@
 ﻿using Application.Interface.Peliculas;
-using Application.Model;
+using Application.Model.DTO;
 using Domain.Entity;
 using Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -18,21 +18,22 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             _service = service;
         }
 
-        [HttpGet("Peliculas")]
-        public async Task<IActionResult> getPeliculas() 
-        {
-            List<PeliculaDTO> result = await _service.getPeliculas();
-            return new JsonResult(result);
-        }
 
-        [HttpGet("Pelicula/{id}")]
+
+
+        [HttpGet("/api/v1/Pelicula/{id}")]
         public async Task<IActionResult> getPelicula(int id) 
         {
             PeliculaDTO result = await _service.getPelicula(id);
             return new JsonResult(result);
         }
 
-        [HttpPut("Pelicula")]
+
+
+
+
+
+        [HttpPut("/api/v1/Pelicula/{id}")]
         public async Task<IActionResult> updatePelicula(PeliculaIdDTO peliculaIdDTO)
         {
             bool resultado = await _service.updatePelicula(peliculaIdDTO);
@@ -42,5 +43,6 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             }
             return NotFound("No se ha encontrado la pelicula");
         }
+
     }
 }

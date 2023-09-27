@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Model
+namespace Application.Model.DTO
 {
     public class FuncionDTO
     {

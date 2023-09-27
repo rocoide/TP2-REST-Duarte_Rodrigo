@@ -1,5 +1,5 @@
 ﻿using Application.Interface.Tickets;
-using Application.Model;
+using Application.Model.DTO;
 using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;

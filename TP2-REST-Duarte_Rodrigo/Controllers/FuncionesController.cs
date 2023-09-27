@@ -1,5 +1,7 @@
 ﻿using Application.Interface.Funciones;
-using Application.Model;
+using Application.Interface.Tickets;
+using Application.Model.DTO;
+using Application.Model.Response;
 using Domain.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,65 +14,82 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
     [ApiController]
     public class FuncionesController : ControllerBase
     {
-        private readonly IFuncionService _service;
+        private readonly IFuncionService _serviceFunciones;
+        private readonly ITicketService _serviceTickets;
 
-        public FuncionesController(IFuncionService service)
+        public FuncionesController(IFuncionService serviceFunciones, ITicketService serviceTickets)
         {
-            _service = service;
+            _serviceFunciones = serviceFunciones;
+            _serviceTickets = serviceTickets;
         }
 
 
 
 
-        [HttpGet("funciones")]
+        [HttpGet("v1/Funcion")]
         public async Task<IActionResult> getFunciones(string titulo = null, string fecha = null, int? generoID = null)
         {
-            List<FuncionDTO> lista = null;
-            //sin filtro, devuelve todas las funciones
-            if ((titulo == null) && (fecha == null) && (generoID == null))
+            try 
             {
-                lista = await _service.getAllFunciones();
-                return new JsonResult(lista);
-            }
-            //caso sin filtros funciona bien
-            List<FuncionDTO> listaFinal = null;
-            if (titulo != null)
-            {
-                lista = await _service.getFuncionesByTitulo(titulo);
-                listaFinal = lista;
-            }
-            if (fecha != null)
-            {
-                DateTime fech = DateTime.Parse(fecha);
-                lista = await _service.getFuncionesByFecha(fech);
-                if (listaFinal != null)
+                List<FuncionResponse> lista = null;
+                List<FuncionResponse> listaFinal = null;
+                //sin filtro, devuelve todas las funciones
+                if ((titulo == null) && (fecha == null) && (generoID == null))
                 {
-                    listaFinal = await _service.compararDTO(listaFinal, lista);
+                    listaFinal = await _serviceFunciones.getAllFunciones();
                 }
-                else
+                if (titulo != null)
                 {
+                    lista = await _serviceFunciones.getFuncionesByTitulo(titulo);
                     listaFinal = lista;
                 }
+                if (fecha != null)
+                {
+                    DateTime fech = DateTime.Parse(fecha);
+                    lista = await _serviceFunciones.getFuncionesByFecha(fech);
+                    if (listaFinal != null)
+                    {
+                        listaFinal = await _serviceFunciones.compararFuncionResponse(listaFinal, lista);
+                    }
+                    else
+                    {
+                        listaFinal = lista;
+                    }
+                }
+                if (generoID != null)
+                {
+                    lista = await _serviceFunciones.getFuncionesByGenero(generoID);
+                    if (listaFinal != null)
+                    {
+                        listaFinal = await _serviceFunciones.compararFuncionResponse(listaFinal, lista);
+                    }
+                    else
+                    {
+                        listaFinal = lista;
+                    }
+                }
+                if (listaFinal.Count != 0)
+                {
+                    return new JsonResult(listaFinal) { StatusCode = 200 };
+                }
+                else 
+                {
+                    Response.Headers.Add("Motivo", "No hay funciones con esos filtros.");
+                    return NoContent();
+                }
             }
-            if (generoID != null)
+            catch (Exception ex)  
             {
-                lista = await _service.getFuncionesByGenero(generoID);
-                if (listaFinal != null)
-                {
-                    listaFinal = await _service.compararDTO(listaFinal, lista);
-                }
-                else
-                {
-                    listaFinal = lista;
-                }
+                return new JsonResult("Ingrese la fecha en el formato dd-mm.") { StatusCode = 400 };
             }
-            return new JsonResult(listaFinal);
         }
 
 
 
 
-        [HttpPost("funcion")]
+
+
+        [HttpPost("v1/Funcion")]
         public async Task<IActionResult> AddFuncion(FuncionIdDTO funcion)
         {
             Funcion fun = new Funcion
@@ -80,7 +99,7 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
                 SalaId = funcion.SalaId,
                 PeliculaId = funcion.PeliculaId
             };
-            bool resultado = await _service.AddFuncion(fun);
+            bool resultado = await _serviceFunciones.AddFuncion(fun);
             if (resultado)
             {
                 return Ok("Se agrego correctamente la funcion.");
@@ -94,10 +113,27 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
 
 
 
-        [HttpDelete("funcion")]
+        [HttpGet("v1/Funcion/{id}")]
+        public async Task<IActionResult> getFuncionByID(int funcionID) 
+        {
+            FuncionDTO? funcionDTO = await _serviceFunciones.getFuncionByID(funcionID);
+            if (funcionDTO == null) 
+            {
+                return NotFound("Funcion no encontrada.");
+            }
+            else 
+            {
+                return new JsonResult(funcionDTO) { StatusCode = 200 };
+            }
+        }
+
+
+
+
+        [HttpDelete("v1/Funcion/{id}")]
         public async Task<IActionResult> removeFuncion(int funcionID)
         {
-            int? resultado = await _service.removeFuncion(funcionID);
+            int? resultado = await _serviceFunciones.removeFuncion(funcionID);
             if (resultado == null)
             {
                 return BadRequest("No se encontre la funcion a eliminar.");
@@ -115,10 +151,14 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             }
         }
 
-        [HttpGet("ticketsParaFuncion/{funcionID}")]
+
+
+
+
+        [HttpGet("/api/v1/Funcion/{id}/tickets")]
         public async Task<IActionResult> getCantTicketsDisponibles (int funcionID) 
         {
-            int? resultado = await _service.getCantTicketsDisponibles(funcionID);
+            int? resultado = await _serviceFunciones.getCantTicketsDisponibles(funcionID);
             if (resultado == null)
             {
                 return NotFound("No existe la funcion solicitada.");
@@ -127,18 +167,19 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             return new JsonResult(res) {StatusCode = 200};
         }
 
-        [HttpGet("funcion/{funcionID}")]
-        public async Task<IActionResult> getFuncionByID(int funcionID) 
+
+
+        
+
+        [HttpPost("/api/v1/Funcion/{id}/tickets")]
+        public async Task<IActionResult> AddTicket(string usuario, int funcionID)
         {
-            FuncionDTO? funcionDTO = await _service.getFuncionByID(funcionID);
-            if (funcionDTO == null) 
+            bool resultado = await _serviceTickets.AddTicket(usuario, funcionID);
+            if (resultado)
             {
-                return NotFound("Funcion no encontrada.");
+                return Ok("Ticket obtenido exitosamente");
             }
-            else 
-            {
-                return new JsonResult(funcionDTO) { StatusCode = 200 };
-            }
+            return BadRequest("Ha habido un problema");
         }
 
     }
