@@ -1,4 +1,5 @@
-﻿using Domain.Entity;
+﻿using Application.Model.Response;
+using Domain.Entity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Application.Interface.Funciones
 {
     public interface IFuncionCommand
     {
-        Task<bool> AddFuncion(Funcion fun);
-        Task<int?> removeFuncion(int funcionID);
+        Task<FuncionResponse> AddFuncion(Funcion fun);
+        Task<FuncionRemoveResponse?> removeFuncion(int funcionID);
     }
 }

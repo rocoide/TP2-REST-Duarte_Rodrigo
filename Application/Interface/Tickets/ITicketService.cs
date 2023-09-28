@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Application.Model.DTO;
+using Application.Model.Response;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,7 @@ namespace Application.Interface.Tickets
 {
     public interface ITicketService
     {
-         Task<bool> AddTicket(string usuario, int funcionID);
+         Task<int?> getCantTicketsDisponibles(int funcionID);
+         Task<TicketResponse> AddTicket (TicketDTO ticketDTO, int id);
     }
 }

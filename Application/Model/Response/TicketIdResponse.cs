@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interface.Tickets
+namespace Application.Model.Response
 {
-    public interface ITicketQuery
+    public class TicketIdResponse
     {
-        Task<int?> getCantTicketsDisponibles(int funcionID);
+        public Guid ticketId { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Application.Interface.Funciones;
 using Application.Interface.Tickets;
 using Application.Model.DTO;
+using Application.Model.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,16 +21,16 @@ namespace Application.UseCase
             _query = query;
         }
 
-        public async Task<bool> AddTicket(string usuario, int funcionID)
+        public async Task<TicketResponse> AddTicket(TicketDTO ticketDTO, int id)
         {
-            Guid guid = Guid.NewGuid();
-            TicketDTO ticketDTO = new TicketDTO
-            {
-                TicketId = guid,
-                Usuario = usuario,
-                FuncionId = funcionID
-            };
-            return await _command.AddTicket(ticketDTO);
+            return await _command.AddTicket (ticketDTO, id);
+        }
+
+
+        public async Task<int?> getCantTicketsDisponibles(int funcionID)
+        {
+            int? resultado = await _query.getCantTicketsDisponibles(funcionID);
+            return resultado;
         }
 
 

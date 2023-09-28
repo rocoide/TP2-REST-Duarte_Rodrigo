@@ -17,9 +17,8 @@ namespace Application.Interface.Funciones
         Task<List<FuncionResponse>> getFuncionesByFecha(DateTime fecha);
         Task<List<FuncionResponse>> getFuncionesByGenero(int? generoID);
         Task<List<FuncionResponse>> compararFuncionResponse(List<FuncionResponse> funcion1, List<FuncionResponse> funcion2);
-        Task<bool> AddFuncion(Funcion fun);
-        Task<int?> removeFuncion(int funcionID);
-        Task<int?> getCantTicketsDisponibles(int funcionID);
-        Task<FuncionDTO> getFuncionByID(int funcionID);
+        Task<FuncionResponse> AddFuncion(FuncionIdDTO funcionIdDTO);
+        Task<FuncionRemoveResponse?> removeFuncion(int funcionID);
+        Task<FuncionResponse> getFuncionByID(int funcionID);
     }
 }

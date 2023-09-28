@@ -1,4 +1,5 @@
 ﻿using Application.Model.DTO;
+using Application.Model.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Application.Interface.Tickets
 {
     public interface ITicketCommand
     {
-        Task<bool> AddTicket(TicketDTO ticketDTO);
+        Task<TicketResponse> AddTicket(TicketDTO ticketDTO, int funcionId);
     }
 }

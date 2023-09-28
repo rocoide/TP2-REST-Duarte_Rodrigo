@@ -10,8 +10,7 @@ namespace Application.Model.DTO
 {
     public class TicketDTO
     {
-        public Guid TicketId { get; set; }
         public string Usuario { get; set; }
-        public int FuncionId { get; set; }
+        public int cantidad { get; set; }
     }
 }

@@ -159,25 +159,8 @@ namespace Infrastructure.Query
             return funciones;
         }
 
-        public async Task<int?> getCantTicketsDisponibles(int funcionID) 
-        {
-            int resultado;
-            Funcion funcion = _context.Funciones.Include(m => m.Salas).FirstOrDefault(s => s.FuncionId == funcionID);
-            if (funcion == null)
-            {
-                return null;
-            }
-            else
-            {
-                List<Ticket> lista_tickets = _context.Tickets
-                                                     .Where(s => s.FuncionId == funcionID)
-                                                     .ToList();
-                resultado = (funcion.Salas.Capacidad - lista_tickets.Count);
-            }
-            return resultado;
-        }
 
-        public async Task<FuncionDTO> getFuncionByID(int funcionID) 
+        public async Task<FuncionResponse> getFuncionByID(int funcionID) 
         {
             Funcion? funcion = await _context.Funciones
                                             .Include(m => m.Salas)
@@ -187,16 +170,31 @@ namespace Infrastructure.Query
                                             .FirstOrDefaultAsync(s => s.FuncionId == funcionID);
             if (funcion != null) 
             {
-                FuncionDTO funcionDTO = new FuncionDTO
+                FuncionResponse funcionResponse = new FuncionResponse
                 {
-                    Fecha = funcion.Fecha.ToString("dd/MM/yyyy"),
-                    Horario = funcion.Horario.ToString(@"hh\:mm"),
-                    Dia = funcion.Fecha.ToString("dddd"),
-                    SalaNombre = funcion.Salas.Nombre,
-                    PeliculaNombre = funcion.Peliculas.Titulo,
-                    PeliculaGenero = funcion.Peliculas.Generos.Nombre
+                    funcionId = funcion.FuncionId,
+                    pelicula = new PeliculaResponseShort
+                    {
+                        peliculaId = funcion.Peliculas.PeliculaId,
+                        titulo = funcion.Peliculas.Titulo,
+                        poster = funcion.Peliculas.Poster,
+                        genero = new GeneroResponse
+                        {
+                            id = funcion.Peliculas.GeneroId,
+                            nombre = funcion.Peliculas.Generos.Nombre
+                        }
+
+                    },
+                    sala = new SalaResponse
+                    {
+                        id = funcion.SalaId,
+                        nombre =funcion.Salas.Nombre,
+                        capacidad = funcion.Salas.Capacidad
+                    },
+                    fecha =funcion.Fecha,
+                    horario = funcion.Horario.ToString(@"hh\:mm")
                 };
-                return funcionDTO;
+                return funcionResponse;
             }
             return null;
         }

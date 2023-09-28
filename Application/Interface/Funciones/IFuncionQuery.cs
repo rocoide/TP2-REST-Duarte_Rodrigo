@@ -15,7 +15,6 @@ namespace Application.Interface.Funciones
         Task<List<FuncionResponse>> getFuncionesByTitulo(string titu);
         Task<List<FuncionResponse>> getFuncionesByFecha(DateTime fecha);
         Task<List<FuncionResponse>> getFuncionesByGenero(int? generoID);
-        Task<int?> getCantTicketsDisponibles(int funcionID);
-        Task<FuncionDTO> getFuncionByID(int funcionID);
+        Task<FuncionResponse> getFuncionByID(int funcionID);
     }
 }

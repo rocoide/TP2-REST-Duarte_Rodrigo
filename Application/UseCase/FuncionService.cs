@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Application.UseCase
 {
@@ -61,23 +62,24 @@ namespace Application.UseCase
             return lista;
         }
 
-        public Task<bool> AddFuncion(Funcion fun) 
+        public Task<FuncionResponse> AddFuncion(FuncionIdDTO funcionIdDTO) 
         {
+            Funcion fun = new Funcion
+            {
+                Fecha = funcionIdDTO.Fecha,
+                Horario = TimeSpan.Parse(funcionIdDTO.Horario),
+                SalaId = funcionIdDTO.SalaId,
+                PeliculaId = funcionIdDTO.PeliculaId
+            };
             return (_command.AddFuncion(fun));
         }
 
-        public async Task<int?> removeFuncion(int funcionID) 
+        public async Task<FuncionRemoveResponse?> removeFuncion(int funcionID) 
         {
            return await _command.removeFuncion(funcionID);
         }
 
-        public async Task<int?> getCantTicketsDisponibles(int funcionID) 
-        {
-            int? resultado = await _query.getCantTicketsDisponibles(funcionID);
-            return resultado;
-        }
-
-        public async Task<FuncionDTO> getFuncionByID(int funcionID) 
+        public async Task<FuncionResponse> getFuncionByID(int funcionID) 
         {
             return await _query.getFuncionByID(funcionID);
         }
