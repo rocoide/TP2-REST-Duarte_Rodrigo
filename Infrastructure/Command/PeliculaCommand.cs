@@ -1,12 +1,8 @@
 ﻿using Application.Interface.Peliculas;
-using Application.Model;
+using Application.Model.Response;
 using Domain.Entity;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Command
 {
@@ -19,21 +15,63 @@ namespace Infrastructure.Command
             _context = context;
         }
 
-        public async Task<bool> updatePelicula(Pelicula pelicula) 
+        public async Task<PeliculaResponseLong> updatePelicula(Pelicula pelicula)
         {
-            Pelicula peli = await _context.Peliculas.FindAsync(pelicula.PeliculaId);
-            if (peli != null)
+            Pelicula? aux = _context.Peliculas.FirstOrDefault(s => s.PeliculaId != pelicula.PeliculaId && s.Titulo == pelicula.Titulo);
+            if (aux == null)
             {
-                peli.Titulo = pelicula.Titulo;
-                peli.Sinopsis = pelicula.Sinopsis;
-                peli.Poster = pelicula.Poster;
-                peli.Trailer = pelicula.Trailer;
-                peli.GeneroId = pelicula.GeneroId;
-                _context.Peliculas.Update(peli);
-                await _context.SaveChangesAsync();
-                return true;
+                Pelicula peli = await _context.Peliculas.FindAsync(pelicula.PeliculaId);
+                if (peli != null)
+                {
+                    peli.Titulo = pelicula.Titulo;
+                    peli.Sinopsis = pelicula.Sinopsis;
+                    peli.Poster = pelicula.Poster;
+                    peli.Trailer = pelicula.Trailer;
+                    peli.Genero = pelicula.Genero;
+                    _context.Peliculas.Update(peli);
+                    await _context.SaveChangesAsync();
+
+                    peli = await _context.Peliculas
+                                   .Include(f => f.Generos)
+                                   .Include(s => s.Funciones)
+                                   .FirstOrDefaultAsync(s => s.PeliculaId == pelicula.PeliculaId);
+
+                    PeliculaResponseLong peliculaResponse = new PeliculaResponseLong
+                    {
+                        peliculaId = pelicula.PeliculaId,
+                        titulo = peli.Titulo,
+                        sinopsis = peli.Sinopsis,
+                        poster = peli.Poster,
+                        trailer = peli.Trailer,
+                        genero = new GeneroResponse
+                        {
+                            id = peli.Generos.GeneroId,
+                            nombre = peli.Generos.Nombre
+                        },
+                        funciones = new List<FuncionResponseShort>()
+                    };
+                    FuncionResponseShort funcionShort;
+                    foreach (Funcion funcion in peli.Funciones)
+                    {
+                        funcionShort = new FuncionResponseShort
+                        {
+                            funcionId = funcion.FuncionId,
+                            fecha = funcion.Fecha,
+                            horario = funcion.Horario.ToString(@"hh\:mm")
+                        };
+                        peliculaResponse.funciones.Add(funcionShort);
+                    }
+                    return peliculaResponse;
+                }
+                else
+                {
+                    return null;
+                }
             }
-            return false;
+            else
+            {
+                throw new AggregateException();
+            }
         }
 
     }

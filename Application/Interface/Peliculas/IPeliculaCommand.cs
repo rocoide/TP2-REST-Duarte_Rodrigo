@@ -1,15 +1,10 @@
-﻿using Application.Model;
+﻿using Application.Model.Response;
 using Domain.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Interface.Peliculas
 {
     public interface IPeliculaCommand
     {
-        Task<bool> updatePelicula(Pelicula pelicula);
+        Task<PeliculaResponseLong> updatePelicula(Pelicula pelicula);
     }
 }

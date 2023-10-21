@@ -2,12 +2,10 @@ using Application.Interface.Funciones;
 using Application.Interface.Peliculas;
 using Application.Interface.Tickets;
 using Application.UseCase;
-using Infrastructure;
 using Infrastructure.Command;
+using Infrastructure.Persistence;
 using Infrastructure.Query;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System.Windows.Input;
 
 var builder = WebApplication.CreateBuilder(args);
 

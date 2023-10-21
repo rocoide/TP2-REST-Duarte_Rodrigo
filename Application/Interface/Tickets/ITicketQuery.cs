@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Interface.Tickets
+﻿namespace Application.Interface.Tickets
 {
     public interface ITicketQuery
     {

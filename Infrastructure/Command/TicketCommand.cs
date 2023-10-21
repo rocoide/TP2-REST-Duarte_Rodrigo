@@ -2,12 +2,8 @@
 using Application.Model.DTO;
 using Application.Model.Response;
 using Domain.Entity;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Command
 {
@@ -20,7 +16,7 @@ namespace Infrastructure.Command
             _context = context;
         }
 
-        public  async Task<TicketResponse> AddTicket(TicketDTO ticketDTO, int funcionId)
+        public async Task<TicketResponse> AddTicket(TicketDTO ticketDTO, int funcionId)
         {
             Ticket ticket;
             TicketIdResponse ticketId;
@@ -39,7 +35,7 @@ namespace Infrastructure.Command
             }
             _context.SaveChanges();
 
-            foreach(Ticket t in tickets) 
+            foreach (Ticket t in tickets)
             {
                 ticketId = new TicketIdResponse
                 {
@@ -66,7 +62,7 @@ namespace Infrastructure.Command
                     poster = funcion.Peliculas.Poster,
                     genero = new GeneroResponse
                     {
-                        id = funcion.Peliculas.GeneroId,
+                        id = funcion.Peliculas.Genero,
                         nombre = funcion.Peliculas.Generos.Nombre
                     }
 

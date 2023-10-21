@@ -1,14 +1,8 @@
 ﻿using Application.Interface.Funciones;
-using Application.Model.DTO;
 using Application.Model.Response;
 using Domain.Entity;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Infrastructure.Query
 {
@@ -21,7 +15,7 @@ namespace Infrastructure.Query
             _context = context;
         }
 
-        public async Task<List<FuncionResponse>> getAllFunciones() 
+        public async Task<List<FuncionResponse>> getAllFunciones()
         {
             List<FuncionResponse> funciones = await _context.Funciones
                                                        .Include(s => s.Salas)
@@ -30,18 +24,19 @@ namespace Infrastructure.Query
                                                        .Select(s => new FuncionResponse
                                                        {
                                                            funcionId = s.FuncionId,
-                                                           pelicula = new PeliculaResponseShort {
+                                                           pelicula = new PeliculaResponseShort
+                                                           {
                                                                peliculaId = s.Peliculas.PeliculaId,
                                                                titulo = s.Peliculas.Titulo,
                                                                poster = s.Peliculas.Poster,
                                                                genero = new GeneroResponse
                                                                {
-                                                                   id = s.Peliculas.GeneroId,
+                                                                   id = s.Peliculas.Genero,
                                                                    nombre = s.Peliculas.Generos.Nombre
                                                                }
-                                                               
+
                                                            },
-                                                           sala = new SalaResponse 
+                                                           sala = new SalaResponse
                                                            {
                                                                id = s.SalaId,
                                                                nombre = s.Salas.Nombre,
@@ -54,7 +49,7 @@ namespace Infrastructure.Query
             return funciones;
         }
 
-        public async Task<List<FuncionResponse>> getFuncionesByTitulo(string titu) 
+        public async Task<List<FuncionResponse>> getFuncionesByTitulo(string titu)
         {
             List<FuncionResponse> funciones = await _context.Funciones
                                                        .Include(s => s.Salas)
@@ -71,7 +66,7 @@ namespace Infrastructure.Query
                                                                poster = s.Peliculas.Poster,
                                                                genero = new GeneroResponse
                                                                {
-                                                                   id = s.Peliculas.GeneroId,
+                                                                   id = s.Peliculas.Genero,
                                                                    nombre = s.Peliculas.Generos.Nombre
                                                                }
 
@@ -89,7 +84,7 @@ namespace Infrastructure.Query
             return funciones;
         }
 
-        public async Task<List<FuncionResponse>> getFuncionesByFecha(DateTime fecha) 
+        public async Task<List<FuncionResponse>> getFuncionesByFecha(DateTime fecha)
         {
             List<FuncionResponse> funciones = await _context.Funciones
                                                        .Include(s => s.Salas)
@@ -106,7 +101,7 @@ namespace Infrastructure.Query
                                                                poster = s.Peliculas.Poster,
                                                                genero = new GeneroResponse
                                                                {
-                                                                   id = s.Peliculas.GeneroId,
+                                                                   id = s.Peliculas.Genero,
                                                                    nombre = s.Peliculas.Generos.Nombre
                                                                }
 
@@ -124,13 +119,13 @@ namespace Infrastructure.Query
             return funciones;
         }
 
-        public async Task<List<FuncionResponse>> getFuncionesByGenero(int? generoID) 
+        public async Task<List<FuncionResponse>> getFuncionesByGenero(int? generoID)
         {
             List<FuncionResponse> funciones = await _context.Funciones
                                                        .Include(s => s.Salas)
                                                        .Include(f => f.Peliculas)
                                                            .ThenInclude(m => m.Generos)
-                                                       .Where(f => f.Peliculas.GeneroId == generoID)
+                                                       .Where(f => f.Peliculas.Genero == generoID)
                                                        .Select(s => new FuncionResponse
                                                        {
                                                            funcionId = s.FuncionId,
@@ -141,7 +136,7 @@ namespace Infrastructure.Query
                                                                poster = s.Peliculas.Poster,
                                                                genero = new GeneroResponse
                                                                {
-                                                                   id = s.Peliculas.GeneroId,
+                                                                   id = s.Peliculas.Genero,
                                                                    nombre = s.Peliculas.Generos.Nombre
                                                                }
 
@@ -160,7 +155,7 @@ namespace Infrastructure.Query
         }
 
 
-        public async Task<FuncionResponse> getFuncionByID(int funcionID) 
+        public async Task<FuncionResponse> getFuncionByID(int funcionID)
         {
             Funcion? funcion = await _context.Funciones
                                             .Include(m => m.Salas)
@@ -168,7 +163,7 @@ namespace Infrastructure.Query
                                             .Include(f => f.Peliculas)
                                                 .ThenInclude(m => m.Generos)
                                             .FirstOrDefaultAsync(s => s.FuncionId == funcionID);
-            if (funcion != null) 
+            if (funcion != null)
             {
                 FuncionResponse funcionResponse = new FuncionResponse
                 {
@@ -180,7 +175,7 @@ namespace Infrastructure.Query
                         poster = funcion.Peliculas.Poster,
                         genero = new GeneroResponse
                         {
-                            id = funcion.Peliculas.GeneroId,
+                            id = funcion.Peliculas.Genero,
                             nombre = funcion.Peliculas.Generos.Nombre
                         }
 
@@ -188,10 +183,10 @@ namespace Infrastructure.Query
                     sala = new SalaResponse
                     {
                         id = funcion.SalaId,
-                        nombre =funcion.Salas.Nombre,
+                        nombre = funcion.Salas.Nombre,
                         capacidad = funcion.Salas.Capacidad
                     },
-                    fecha =funcion.Fecha,
+                    fecha = funcion.Fecha,
                     horario = funcion.Horario.ToString(@"hh\:mm")
                 };
                 return funcionResponse;

@@ -2,12 +2,6 @@
 using Application.Model.DTO;
 using Application.Model.Response;
 using Domain.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Application.UseCase
 {
@@ -22,25 +16,25 @@ namespace Application.UseCase
             _query = query;
         }
 
-        public async Task<List<FuncionResponse>> getAllFunciones() 
+        public async Task<List<FuncionResponse>> getAllFunciones()
         {
             List<FuncionResponse> lista = await _query.getAllFunciones();
             return lista;
         }
 
-        public async Task<List<FuncionResponse>> getFuncionesByTitulo(string titu) 
+        public async Task<List<FuncionResponse>> getFuncionesByTitulo(string titu)
         {
             List<FuncionResponse> funciones = await _query.getFuncionesByTitulo(titu);
             return funciones;
         }
 
-        public async Task<List<FuncionResponse>> getFuncionesByFecha(DateTime fecha) 
+        public async Task<List<FuncionResponse>> getFuncionesByFecha(DateTime fecha)
         {
             List<FuncionResponse> funciones = await _query.getFuncionesByFecha(fecha);
             return funciones;
         }
 
-        public async Task<List<FuncionResponse>> getFuncionesByGenero(int? generoID) 
+        public async Task<List<FuncionResponse>> getFuncionesByGenero(int? generoID)
         {
             List<FuncionResponse> funciones = await _query.getFuncionesByGenero(generoID);
             return funciones;
@@ -62,7 +56,7 @@ namespace Application.UseCase
             return lista;
         }
 
-        public Task<FuncionResponse> AddFuncion(FuncionIdDTO funcionIdDTO) 
+        public Task<FuncionResponse> AddFuncion(FuncionIdDTO funcionIdDTO)
         {
             Funcion fun = new Funcion
             {
@@ -74,12 +68,12 @@ namespace Application.UseCase
             return (_command.AddFuncion(fun));
         }
 
-        public async Task<FuncionRemoveResponse?> removeFuncion(int funcionID) 
+        public async Task<FuncionRemoveResponse?> removeFuncion(int funcionID)
         {
-           return await _command.removeFuncion(funcionID);
+            return await _command.removeFuncion(funcionID);
         }
 
-        public async Task<FuncionResponse> getFuncionByID(int funcionID) 
+        public async Task<FuncionResponse> getFuncionByID(int funcionID)
         {
             return await _query.getFuncionByID(funcionID);
         }

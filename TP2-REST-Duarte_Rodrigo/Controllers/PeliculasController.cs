@@ -1,8 +1,6 @@
 ﻿using Application.Interface.Peliculas;
 using Application.Model.DTO;
-using Domain.Entity;
-using Infrastructure;
-using Microsoft.AspNetCore.Http;
+using Application.Model.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TP2_REST_Duarte_Rodrigo.Controllers
@@ -13,7 +11,7 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
     {
         private readonly IPeliculaService _service;
 
-        public PeliculasController(IPeliculaService service) 
+        public PeliculasController(IPeliculaService service)
         {
             _service = service;
         }
@@ -22,10 +20,24 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
 
 
         [HttpGet("/api/v1/Pelicula/{id}")]
-        public async Task<IActionResult> getPelicula(int id) 
+        public async Task<IActionResult> getPelicula(int id)
         {
-            PeliculaDTO result = await _service.getPelicula(id);
-            return new JsonResult(result);
+            try
+            {
+                PeliculaResponseLong result = await _service.getPelicula(id);
+                if (result == null)
+                {
+                    return new JsonResult("No se encontro la pelicula solicitada") { StatusCode = 404 };
+                }
+                else
+                {
+                    return new JsonResult(result) { StatusCode = 200 };
+                }
+            }
+            catch (Exception)
+            {
+                return new JsonResult("Por favor ingrese un valor valido.") { StatusCode = 400 };
+            }
         }
 
 
@@ -34,14 +46,33 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
 
 
         [HttpPut("/api/v1/Pelicula/{id}")]
-        public async Task<IActionResult> updatePelicula(PeliculaIdDTO peliculaIdDTO)
+        public async Task<IActionResult> updatePelicula(PeliculaIdDTO peliculaIdDTO, int id)
         {
-            bool resultado = await _service.updatePelicula(peliculaIdDTO);
-            if (resultado) 
+            try
             {
-                return new JsonResult("Se ha actualizado la pelicula correctamente") {StatusCode = 201};
+                bool cumple = await _service.validarCampos(peliculaIdDTO);
+                if (cumple)
+                {
+                    PeliculaResponseLong resultado = await _service.updatePelicula(peliculaIdDTO, id);
+                    if (resultado != null)
+                    {
+                        return new JsonResult(resultado) { StatusCode = 201 };
+                    }
+                    return NotFound("No se ha encontrado la pelicula");
+                }
+                else
+                {
+                    return new JsonResult("Asegurese de que los campos cumplan con las especificaciones.") { StatusCode = 400 };
+                }
             }
-            return NotFound("No se ha encontrado la pelicula");
+            catch (AggregateException)
+            {
+                return new JsonResult("No se ha podido actualizar la pelicula debido a que existe otra con el mismo titulo.") { StatusCode = 409 };
+            }
+            catch (Exception)
+            {
+                return new JsonResult("Por favor ingrese un ID de genero entre los valores 1-20.");
+            }
         }
 
     }

@@ -1,11 +1,7 @@
 ﻿using Application.Interface.Peliculas;
 using Application.Model.DTO;
+using Application.Model.Response;
 using Domain.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.UseCase
 {
@@ -14,37 +10,57 @@ namespace Application.UseCase
         private readonly IPeliculaCommand _command;
         private readonly IPeliculaQuery _query;
 
-        public PeliculaService (IPeliculaCommand command, IPeliculaQuery query) 
+        public PeliculaService(IPeliculaCommand command, IPeliculaQuery query)
         {
             _command = command;
             _query = query;
         }
 
-        public async Task<List<PeliculaDTO>> getPeliculas() 
+        public async Task<List<PeliculaDTO>> getPeliculas()
         {
             List<PeliculaDTO> peliculas = await _query.getPeliculas();
             return peliculas;
         }
 
-        public async Task<PeliculaDTO> getPelicula(int id) 
+        public async Task<PeliculaResponseLong> getPelicula(int id)
         {
-            PeliculaDTO pelicula = await _query.getPelicula(id);
+            PeliculaResponseLong pelicula = await _query.getPelicula(id);
             return pelicula;
         }
-
-        public async Task<bool> updatePelicula(PeliculaIdDTO peliculaIdDTO) 
+        public async Task<bool> validarCampos(PeliculaIdDTO peliculaIdDTO)
         {
-            Pelicula pelicula = new Pelicula 
+            if (peliculaIdDTO.Titulo.Length > 50)
             {
-                PeliculaId = peliculaIdDTO.PeliculaId,
+                return false;
+            }
+            if (peliculaIdDTO.Sinopsis.Length > 255)
+            {
+                return false;
+            }
+            if (peliculaIdDTO.Poster.Length > 100)
+            {
+                return false;
+            }
+            if (peliculaIdDTO.Trailer.Length > 100)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<PeliculaResponseLong> updatePelicula(PeliculaIdDTO peliculaIdDTO, int peliculaID)
+        {
+            Pelicula pelicula = new Pelicula
+            {
+                PeliculaId = peliculaID,
                 Titulo = peliculaIdDTO.Titulo,
                 Sinopsis = peliculaIdDTO.Sinopsis,
                 Poster = peliculaIdDTO.Poster,
-                Trailer =  peliculaIdDTO.Trailer,
-                GeneroId = peliculaIdDTO.GeneroId
+                Trailer = peliculaIdDTO.Trailer,
+                Genero = peliculaIdDTO.GeneroId
             };
             return await _command.updatePelicula(pelicula);
-            
+
         }
 
 

@@ -2,12 +2,7 @@
 using Application.Interface.Tickets;
 using Application.Model.DTO;
 using Application.Model.Response;
-using Domain.Entity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
-using System.Collections.Generic;
 
 namespace TP2_REST_Duarte_Rodrigo.Controllers
 {
@@ -30,7 +25,7 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
         [HttpGet("v1/Funcion")]
         public async Task<IActionResult> getFunciones(string titulo = null, string fecha = null, int? generoID = null)
         {
-            try 
+            try
             {
                 List<FuncionResponse> lista = null;
                 List<FuncionResponse> listaFinal = null;
@@ -73,13 +68,13 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
                 {
                     return new JsonResult(listaFinal) { StatusCode = 200 };
                 }
-                else 
+                else
                 {
                     Response.Headers.Add("Motivo", "No hay funciones con esos filtros.");
-                    return NoContent();
+                    return new JsonResult("No se encontraron funciones.") { StatusCode = 404 };
                 }
             }
-            catch (Exception ex)  
+            catch (Exception)
             {
                 return new JsonResult("Ingrese la fecha en el formato dd-mm.") { StatusCode = 400 };
             }
@@ -93,7 +88,7 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
         [HttpPost("v1/Funcion")]
         public async Task<IActionResult> AddFuncion(FuncionIdDTO funcionIdDTO)
         {
-            try 
+            try
             {
                 FuncionResponse resultado = await _serviceFunciones.AddFuncion(funcionIdDTO);
                 if (resultado != null)
@@ -105,9 +100,9 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
                     return new JsonResult("No se pudo agregar correctamente la funcion.") { StatusCode = 409 };
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                return new JsonResult("Por favor ingrese los campos en un formato valido") { StatusCode = 400 };
+                return new JsonResult("Por favor ingrese valores validos en los campos") { StatusCode = 400 };
             }
         }
 
@@ -115,21 +110,21 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
 
 
         [HttpGet("v1/Funcion/{id}")]
-        public async Task<IActionResult> getFuncionByID(int id) 
+        public async Task<IActionResult> getFuncionByID(int id)
         {
-            try 
+            try
             {
                 FuncionResponse? funcionDTO = await _serviceFunciones.getFuncionByID(id);
-                if (funcionDTO == null) 
+                if (funcionDTO == null)
                 {
                     return NotFound("Funcion no encontrada.");
                 }
-                else 
+                else
                 {
                     return new JsonResult(funcionDTO) { StatusCode = 200 };
                 }
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 return new JsonResult("Por favor ingrese los campos en el un formato correspondientes.") { StatusCode = 400 };
             }
@@ -141,7 +136,7 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
         [HttpDelete("v1/Funcion/{id}")]
         public async Task<IActionResult> removeFuncion(int id)
         {
-            try 
+            try
             {
                 FuncionRemoveResponse? resultado = await _serviceFunciones.removeFuncion(id);
                 if (resultado == null)
@@ -150,21 +145,21 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
                 }
                 else
                 {
-                    if (resultado.funcionId == 0) 
+                    if (resultado.funcionId == 0)
                     {
-                        return Ok("Se elimino la funcion correctamente.");
+                        return new JsonResult(resultado) { StatusCode = 200 };
                     }
-                    else 
+                    else
                     {
                         return new JsonResult("No se puede eliminar la funcion debido a que tiene entradas vendidas") { StatusCode = 409 };
                     }
                 }
             }
-            catch (FormatException) 
+            catch (FormatException)
             {
                 return new JsonResult("Por favor ingrese los campos en el formato correspondientes.") { StatusCode = 400 };
             }
-            
+
         }
 
 
@@ -172,18 +167,18 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
 
 
         [HttpGet("/api/v1/Funcion/{id}/tickets")]
-        public async Task<IActionResult> getCantTicketsDisponibles (int id) 
+        public async Task<IActionResult> getCantTicketsDisponibles(int id)
         {
-            try 
+            try
             {
                 int? resultado = await _serviceTickets.getCantTicketsDisponibles(id);
                 if (resultado == null)
                 {
                     return NotFound("No existe la funcion solicitada.");
                 }
-                return new JsonResult(resultado) {StatusCode = 200};
+                return new JsonResult(resultado) { StatusCode = 200 };
             }
-            catch (FormatException) 
+            catch (FormatException)
             {
                 return new JsonResult("Por favor llene adecuadamene los campos.");
             }
@@ -191,28 +186,28 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
 
 
 
-        
+
 
         [HttpPost("/api/v1/Funcion/{id}/tickets")]
         public async Task<IActionResult> AddTicket(TicketDTO ticketDTO, int id)
         {
-            try 
+            try
             {
                 int? tickets_disponibles = await _serviceTickets.getCantTicketsDisponibles(id);
-                if (tickets_disponibles == null) 
+                if (tickets_disponibles == null)
                 {
                     return NotFound("No se ha encontrado la funcion.");
                 }
-                else 
+                else
                 {
-                    if (tickets_disponibles < ticketDTO.cantidad) 
+                    if (tickets_disponibles < ticketDTO.cantidad)
                     {
                         return Ok("No hay suficientes tickets disponibles para esta funcion.");
                     }
-                    else 
+                    else
                     {
                         TicketResponse ticketResponse = await _serviceTickets.AddTicket(ticketDTO, id);
-                        return new JsonResult(ticketResponse) { StatusCode = 201} ;
+                        return new JsonResult(ticketResponse) { StatusCode = 201 };
                     }
                 }
             }

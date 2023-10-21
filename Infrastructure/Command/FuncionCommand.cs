@@ -1,15 +1,8 @@
 ﻿using Application.Interface.Funciones;
 using Application.Model.Response;
 using Domain.Entity;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Command
 {
@@ -21,9 +14,9 @@ namespace Infrastructure.Command
         {
             _context = context;
         }
-        public async Task<FuncionResponse> AddFuncion(Funcion fun) 
+        public async Task<FuncionResponse> AddFuncion(Funcion fun)
         {
-            TimeSpan tiempo_agregado = new TimeSpan(2,30,0);
+            TimeSpan tiempo_agregado = new TimeSpan(2, 30, 0);
             TimeSpan aux = fun.Horario + TimeSpan.FromHours(-2) + TimeSpan.FromMinutes(-30); //auxiliar para simular la comparacion con el fin de las peliculas en cartelera
             TimeSpan hora_fin = fun.Horario.Add(tiempo_agregado);
             Funcion? funcion_solapada = _context.Funciones
@@ -35,13 +28,13 @@ namespace Infrastructure.Command
                                                             (f.Horario <= fun.Horario && f.Horario > aux)
                                                           )
                                                 );
-            if (funcion_solapada == null) 
+            if (funcion_solapada == null)
             {
                 _context.Funciones.Add(fun);
                 _context.SaveChanges();
                 Funcion? fun2 = await _context.Funciones
                                               .Include(s => s.Peliculas)
-                                                .ThenInclude(f => f.Generos )
+                                                .ThenInclude(f => f.Generos)
                                               .Include(m => m.Salas)
                                               .FirstOrDefaultAsync(s => s.FuncionId == fun.FuncionId);
                 FuncionResponse funcionResponse = new FuncionResponse
@@ -69,13 +62,13 @@ namespace Infrastructure.Command
                 };
                 return funcionResponse;
             }
-            else 
+            else
             {
                 return null;
             }
         }
 
-        public async Task<FuncionRemoveResponse?> removeFuncion(int funcionID) 
+        public async Task<FuncionRemoveResponse?> removeFuncion(int funcionID)
         {
             Funcion? funcion = await _context.Funciones.FindAsync(funcionID);
             List<Ticket> lista_tickets = await _context.Tickets
@@ -93,13 +86,13 @@ namespace Infrastructure.Command
                 };
                 return funcion_removida;
             }
-            else 
+            else
             {
-                if(funcion == null) 
+                if (funcion == null)
                 {
                     return null;
                 }
-                else 
+                else
                 {
                     FuncionRemoveResponse funcion_removida = new FuncionRemoveResponse
                     {

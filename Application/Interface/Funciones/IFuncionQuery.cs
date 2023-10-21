@@ -1,11 +1,4 @@
-﻿using Application.Model.DTO;
-using Application.Model.Response;
-using Domain.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Model.Response;
 
 namespace Application.Interface.Funciones
 {

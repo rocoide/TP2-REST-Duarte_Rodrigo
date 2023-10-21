@@ -1,12 +1,6 @@
-﻿using Application.Interface.Funciones;
-using Application.Interface.Tickets;
+﻿using Application.Interface.Tickets;
 using Application.Model.DTO;
 using Application.Model.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.UseCase
 {
@@ -23,7 +17,7 @@ namespace Application.UseCase
 
         public async Task<TicketResponse> AddTicket(TicketDTO ticketDTO, int id)
         {
-            return await _command.AddTicket (ticketDTO, id);
+            return await _command.AddTicket(ticketDTO, id);
         }
 
 

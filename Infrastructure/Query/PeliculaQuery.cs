@@ -1,12 +1,9 @@
 ﻿using Application.Interface.Peliculas;
 using Application.Model.DTO;
+using Application.Model.Response;
 using Domain.Entity;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Query
 {
@@ -14,7 +11,7 @@ namespace Infrastructure.Query
     {
         private readonly CineContext _context;
 
-        public PeliculaQuery(CineContext context) 
+        public PeliculaQuery(CineContext context)
         {
             _context = context;
         }
@@ -23,7 +20,7 @@ namespace Infrastructure.Query
         {
             List<PeliculaDTO> peliculas = _context.Peliculas
                                                   .Include(f => f.Generos)
-                                                  .Select(s => new PeliculaDTO 
+                                                  .Select(s => new PeliculaDTO
                                                   {
                                                       Titulo = s.Titulo,
                                                       Sinopsis = s.Sinopsis,
@@ -35,24 +32,42 @@ namespace Infrastructure.Query
             return peliculas;
         }
 
-        public async Task<PeliculaDTO> getPelicula(int id) 
+        public async Task<PeliculaResponseLong> getPelicula(int id)
         {
             Pelicula? pelicula = _context.Peliculas
                                         .Include(f => f.Generos)
+                                        .Include(s => s.Funciones)
                                         .FirstOrDefault(s => s.PeliculaId == id);
             if (pelicula != null)
             {
-                PeliculaDTO peliculaDTO = new PeliculaDTO
+                PeliculaResponseLong peliculaResponse = new PeliculaResponseLong
                 {
-                    Titulo = pelicula.Titulo,
-                    Sinopsis = pelicula.Sinopsis,
-                    Poster = pelicula.Poster,
-                    Trailer = pelicula.Trailer,
-                    Genero = pelicula.Generos.Nombre
+                    peliculaId = id,
+                    titulo = pelicula.Titulo,
+                    sinopsis = pelicula.Sinopsis,
+                    poster = pelicula.Poster,
+                    trailer = pelicula.Trailer,
+                    genero = new GeneroResponse
+                    {
+                        id = pelicula.Generos.GeneroId,
+                        nombre = pelicula.Generos.Nombre
+                    },
+                    funciones = new List<FuncionResponseShort>()
                 };
-                return peliculaDTO;
+                FuncionResponseShort funcionShort;
+                foreach (Funcion funcion in pelicula.Funciones)
+                {
+                    funcionShort = new FuncionResponseShort
+                    {
+                        funcionId = funcion.FuncionId,
+                        fecha = funcion.Fecha,
+                        horario = funcion.Horario.ToString(@"hh\:mm")
+                    };
+                    peliculaResponse.funciones.Add(funcionShort);
+                }
+                return peliculaResponse;
             }
-            else 
+            else
             {
                 return null;
             }

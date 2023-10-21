@@ -1,17 +1,13 @@
 ﻿using Application.Model.DTO;
-using Domain.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Application.Model.Response;
 
 namespace Application.Interface.Peliculas
 {
     public interface IPeliculaService
     {
         Task<List<PeliculaDTO>> getPeliculas();
-        Task<PeliculaDTO> getPelicula(int id);
-        Task<bool> updatePelicula(PeliculaIdDTO peliculaIdDTO);
+        Task<PeliculaResponseLong> getPelicula(int id);
+        Task<bool> validarCampos(PeliculaIdDTO peliculaIdDTO);
+        Task<PeliculaResponseLong> updatePelicula(PeliculaIdDTO peliculaIdDTO, int peliculaID);
     }
 }
