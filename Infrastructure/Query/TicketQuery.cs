@@ -7,29 +7,29 @@ namespace Infrastructure.Query
 {
     public class TicketQuery : ITicketQuery
     {
-        private readonly CineContext _context;
+        private readonly CineContext Context;
 
-        public TicketQuery(CineContext context)
+        public TicketQuery(CineContext Context)
         {
-            _context = context;
+            this.Context = Context;
         }
 
-        public async Task<int?> getCantTicketsDisponibles(int funcionID)
+        public async Task<int?> GetCantTicketsDisponibles(int FuncionId)
         {
-            int resultado;
-            Funcion funcion = _context.Funciones.Include(m => m.Salas).FirstOrDefault(s => s.FuncionId == funcionID);
-            if (funcion == null)
+            int Resultado;
+            Funcion? Funcion = await Context.Funciones.Include(m => m.Salas).FirstOrDefaultAsync(s => s.FuncionId == FuncionId);
+            if (Funcion == null)
             {
                 return null;
             }
             else
             {
-                List<Ticket> lista_tickets = _context.Tickets
-                                                     .Where(s => s.FuncionId == funcionID)
-                                                     .ToList();
-                resultado = (funcion.Salas.Capacidad - lista_tickets.Count);
+                List<Ticket> ListaTickets = Context.Tickets
+                                                    .Where(s => s.FuncionId == FuncionId)
+                                                    .ToList();
+                Resultado = (Funcion.Salas.Capacidad - ListaTickets.Count);
             }
-            return resultado;
+            return Resultado;
         }
     }
 }

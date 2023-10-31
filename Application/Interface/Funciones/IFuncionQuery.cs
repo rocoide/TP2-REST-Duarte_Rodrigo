@@ -1,13 +1,11 @@
 ﻿using Application.Model.Response;
+using Domain.Entity;
 
 namespace Application.Interface.Funciones
 {
     public interface IFuncionQuery
     {
-        Task<List<FuncionResponse>> getAllFunciones();
-        Task<List<FuncionResponse>> getFuncionesByTitulo(string titu);
-        Task<List<FuncionResponse>> getFuncionesByFecha(DateTime fecha);
-        Task<List<FuncionResponse>> getFuncionesByGenero(int? generoID);
-        Task<FuncionResponse> getFuncionByID(int funcionID);
+        Task<List<Funcion>> GetFunciones(string? Titulo, string? Fecha, int? GeneroId);
+        Task<Funcion?> GetFuncionByID(int FuncionID);
     }
 }

@@ -1,4 +1,8 @@
-﻿using Application.Interface.Funciones;
+﻿using Application.Excepcions;
+using Application.Interface.Funciones;
+using Application.Interface.Peliculas;
+using Application.Interface.Salas;
+using Application.Mapping;
 using Application.Model.DTO;
 using Application.Model.Response;
 using Domain.Entity;
@@ -7,76 +11,109 @@ namespace Application.UseCase
 {
     public class FuncionService : IFuncionService
     {
-        private readonly IFuncionCommand _command;
-        private readonly IFuncionQuery _query;
+        private readonly IFuncionCommand FuncionCommand;
+        private readonly IFuncionQuery FuncionQuery;
+        private readonly ISalaQuery SalaQuery;
+        private readonly IPeliculaQuery PeliculaQuery;
 
-        public FuncionService(IFuncionCommand command, IFuncionQuery query)
+        public FuncionService(IFuncionCommand FuncionCommand, IFuncionQuery FuncionQuery, ISalaQuery SalaQuery, IPeliculaQuery PeliculaQuery)
         {
-            _command = command;
-            _query = query;
+            this.FuncionCommand = FuncionCommand;
+            this.FuncionQuery = FuncionQuery;
+            this.SalaQuery = SalaQuery;
+            this.PeliculaQuery = PeliculaQuery;
         }
 
-        public async Task<List<FuncionResponse>> getAllFunciones()
+        public async Task<List<FuncionResponse>> GetFunciones(string? Titulo, string? Fecha, int? GeneroId)
         {
-            List<FuncionResponse> lista = await _query.getAllFunciones();
-            return lista;
+            List<Funcion> Funciones = await FuncionQuery.GetFunciones(Titulo, Fecha, GeneroId);
+            MappingFuncionesToFuncionesResponse Mapping = new MappingFuncionesToFuncionesResponse();
+            List<FuncionResponse> ListaResponse = Mapping.Map(Funciones);
+            return ListaResponse;
         }
 
-        public async Task<List<FuncionResponse>> getFuncionesByTitulo(string titu)
+        public async Task<FuncionResponse> AddFuncion(FuncionDTO FuncionDTO)
         {
-            List<FuncionResponse> funciones = await _query.getFuncionesByTitulo(titu);
-            return funciones;
-        }
-
-        public async Task<List<FuncionResponse>> getFuncionesByFecha(DateTime fecha)
-        {
-            List<FuncionResponse> funciones = await _query.getFuncionesByFecha(fecha);
-            return funciones;
-        }
-
-        public async Task<List<FuncionResponse>> getFuncionesByGenero(int? generoID)
-        {
-            List<FuncionResponse> funciones = await _query.getFuncionesByGenero(generoID);
-            return funciones;
-        }
-
-        public async Task<List<FuncionResponse>> compararFuncionResponse(List<FuncionResponse> funcion1, List<FuncionResponse> funcion2)
-        {
-            List<FuncionResponse> lista = new List<FuncionResponse>();
-            foreach (FuncionResponse fun2 in funcion2)
+            Sala? Sala = await SalaQuery.GetSalaById(FuncionDTO.SalaId);
+            if (Sala == null) 
             {
-                foreach (FuncionResponse fun1 in funcion1)
-                {
-                    if (fun2.funcionId == fun1.funcionId)
-                    {
-                        lista.Add(fun1);
-                    }
-                }
+                throw new SalaExcepcion("La sala ingresada no existe.");
             }
-            return lista;
-        }
-
-        public Task<FuncionResponse> AddFuncion(FuncionIdDTO funcionIdDTO)
-        {
-            Funcion fun = new Funcion
+            Pelicula? Pelicula = await PeliculaQuery.GetPeliculaById(FuncionDTO.PeliculaId);
+            if (Pelicula == null)
             {
-                Fecha = funcionIdDTO.Fecha,
-                Horario = TimeSpan.Parse(funcionIdDTO.Horario),
-                SalaId = funcionIdDTO.SalaId,
-                PeliculaId = funcionIdDTO.PeliculaId
+                throw new PeliculaExcepcion("La pelicula ingresada ingresada no existe.");
+            }
+            MapFuncionDTOToFuncion Mapping = new MapFuncionDTOToFuncion();
+            Funcion? Fun = Mapping.Map(FuncionDTO);
+            MappingFuncionesToFuncionesResponse Mapping2 = new MappingFuncionesToFuncionesResponse();
+            Fun = await FuncionCommand.AddFuncion(Fun);
+            if (Fun == null)
+            {
+                throw new HorarioExcepcion("No se pudo agregar correctamente la funcion debido a que ese horario se encuentra ocupado.");
+            }
+            else
+            {
+                FuncionResponse FuncionResponse = Mapping2.Map(Fun);
+                return FuncionResponse;
+            }
+        }
+    
+
+
+
+        public async Task<FuncionResponse?> GetFuncionById(int FuncionId)
+        {
+            Funcion? Funcion = await FuncionQuery.GetFuncionByID(FuncionId);
+            if (Funcion == null)
+            {
+                return null;
+            }
+            MappingFuncionesToFuncionesResponse Mapping = new MappingFuncionesToFuncionesResponse();
+            FuncionResponse FuncionResponse = Mapping.Map(Funcion);
+            return FuncionResponse;
+        }
+
+       
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        public async Task<FuncionRemoveResponse?> RemoveFuncion(int FuncionId)
+        {
+            Funcion? Funcion = await FuncionCommand.RemoveFuncion(FuncionId);
+            if (Funcion == null)
+            {
+                return null;
+            }
+            FuncionRemoveResponse FuncionRemoveResponse = new FuncionRemoveResponse
+            {
+                FuncionId = Funcion.FuncionId,
+                Fecha = Funcion.Fecha,
+                Horario = Funcion.Horario.ToString(@"hh\:mm"),
             };
-            return (_command.AddFuncion(fun));
+            return FuncionRemoveResponse;
         }
 
-        public async Task<FuncionRemoveResponse?> removeFuncion(int funcionID)
-        {
-            return await _command.removeFuncion(funcionID);
-        }
 
-        public async Task<FuncionResponse> getFuncionByID(int funcionID)
-        {
-            return await _query.getFuncionByID(funcionID);
-        }
+
+
+
+
+
+
+
+
+        //public async Task<FuncionResponse> GetFuncionByID(int funcionID)
+        //{
+        //    return await FuncionQuery.GetFuncionByID(funcionID);
+        //}
 
     }
 }

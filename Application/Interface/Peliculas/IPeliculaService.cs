@@ -5,8 +5,8 @@ namespace Application.Interface.Peliculas
 {
     public interface IPeliculaService
     {
-        Task<List<PeliculaDTO>> getPeliculas();
-        Task<PeliculaResponseLong> getPelicula(int id);
+        Task<List<PeliculaDTO>> GetPeliculas();
+        Task<PeliculaResponseLong> GetPeliculaById(int PeliculaId);
         Task<bool> validarCampos(PeliculaIdDTO peliculaIdDTO);
         Task<PeliculaResponseLong> updatePelicula(PeliculaIdDTO peliculaIdDTO, int peliculaID);
     }

@@ -45,8 +45,8 @@ namespace Infrastructure.Command
                         trailer = peli.Trailer,
                         genero = new GeneroResponse
                         {
-                            id = peli.Generos.GeneroId,
-                            nombre = peli.Generos.Nombre
+                            Id = peli.Generos.GeneroId,
+                            Nombre = peli.Generos.Nombre
                         },
                         funciones = new List<FuncionResponseShort>()
                     };

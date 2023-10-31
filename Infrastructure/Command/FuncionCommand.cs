@@ -1,4 +1,5 @@
-﻿using Application.Interface.Funciones;
+﻿using Application.Excepcions;
+using Application.Interface.Funciones;
 using Application.Model.Response;
 using Domain.Entity;
 using Infrastructure.Persistence;
@@ -8,59 +9,39 @@ namespace Infrastructure.Command
 {
     public class FuncionCommand : IFuncionCommand
     {
-        private readonly CineContext _context;
+        private readonly CineContext Context;
 
-        public FuncionCommand(CineContext context)
+        public FuncionCommand(CineContext Context)
         {
-            _context = context;
+            this.Context = Context;
         }
-        public async Task<FuncionResponse> AddFuncion(Funcion fun)
+        public async Task<Funcion?> AddFuncion(Funcion Fun)
         {
-            TimeSpan tiempo_agregado = new TimeSpan(2, 30, 0);
-            TimeSpan aux = fun.Horario + TimeSpan.FromHours(-2) + TimeSpan.FromMinutes(-30); //auxiliar para simular la comparacion con el fin de las peliculas en cartelera
-            TimeSpan hora_fin = fun.Horario.Add(tiempo_agregado);
-            Funcion? funcion_solapada = _context.Funciones
-                                                .FirstOrDefault(f => (f.SalaId == fun.SalaId) &&
-                                                          (f.Fecha.Month == fun.Fecha.Month) &&
-                                                          (f.Fecha.Day == fun.Fecha.Day) &&
-                                                          (
-                                                            (f.Horario >= fun.Horario && f.Horario < hora_fin) ||
-                                                            (f.Horario <= fun.Horario && f.Horario > aux)
-                                                          )
-                                                );
-            if (funcion_solapada == null)
+            TimeSpan TiempoAgregado = new TimeSpan(2, 30, 0);
+            TimeSpan Aux = Fun.Horario + TimeSpan.FromHours(-2) + TimeSpan.FromMinutes(-30); //auxiliar para simular la comparacion con el fin de las peliculas en cartelera
+            TimeSpan HoraFin = Fun.Horario.Add(TiempoAgregado);
+            Funcion? FuncionSolapada = await Context.Funciones
+                                                    .Include(s => s.Peliculas)
+                                                        .ThenInclude(m => m.Generos)
+                                                    .Include(s => s.Salas)
+                                                    .FirstOrDefaultAsync(f => (f.SalaId == Fun.SalaId) &&
+                                                                              (f.Fecha.Month == Fun.Fecha.Month) &&
+                                                                              (f.Fecha.Day == Fun.Fecha.Day) &&
+                                                                              (
+                                                                                 (f.Horario >= Fun.Horario && f.Horario < HoraFin) ||
+                                                                                 (f.Horario <= Fun.Horario && f.Horario > Aux)
+                                                                              )
+                                                    );
+            if (FuncionSolapada == null)
             {
-                _context.Funciones.Add(fun);
-                _context.SaveChanges();
-                Funcion? fun2 = await _context.Funciones
-                                              .Include(s => s.Peliculas)
-                                                .ThenInclude(f => f.Generos)
-                                              .Include(m => m.Salas)
-                                              .FirstOrDefaultAsync(s => s.FuncionId == fun.FuncionId);
-                FuncionResponse funcionResponse = new FuncionResponse
-                {
-                    funcionId = fun2.FuncionId,
-                    pelicula = new PeliculaResponseShort
-                    {
-                        peliculaId = fun2.PeliculaId,
-                        titulo = fun2.Peliculas.Titulo,
-                        poster = fun2.Peliculas.Poster,
-                        genero = new GeneroResponse
-                        {
-                            id = fun2.Peliculas.Generos.GeneroId,
-                            nombre = fun2.Peliculas.Generos.Nombre
-                        }
-                    },
-                    sala = new SalaResponse
-                    {
-                        id = fun2.Salas.SalaId,
-                        nombre = fun2.Salas.Nombre,
-                        capacidad = fun2.Salas.Capacidad
-                    },
-                    fecha = fun2.Fecha,
-                    horario = fun2.Horario.ToString(@"hh\:mm")
-                };
-                return funcionResponse;
+                Context.Funciones.Add(Fun);
+                await Context.SaveChangesAsync();
+                Funcion? Fun2 = await Context.Funciones
+                                             .Include(s => s.Peliculas)
+                                                .ThenInclude(m => m.Generos)
+                                             .Include(s => s.Salas)
+                                             .FirstOrDefaultAsync(f => f.FuncionId == Fun.FuncionId);
+                return Fun2;
             }
             else
             {
@@ -68,37 +49,27 @@ namespace Infrastructure.Command
             }
         }
 
-        public async Task<FuncionRemoveResponse?> removeFuncion(int funcionID)
+        public async Task<Funcion?> RemoveFuncion(int FuncionId)
         {
-            Funcion? funcion = await _context.Funciones.FindAsync(funcionID);
-            List<Ticket> lista_tickets = await _context.Tickets
-                                                       .Where(s => s.FuncionId == funcionID)
+            Funcion? Funcion = await Context.Funciones.FindAsync(FuncionId);
+            List<Ticket> ListaTickets = await Context.Tickets
+                                                       .Where(s => s.FuncionId == FuncionId)
                                                        .ToListAsync();
-            if ((funcion != null) && (lista_tickets.Count == 0))
+            if ((Funcion != null) && (ListaTickets.Count == 0))
             {
-                _context.Funciones.Remove(funcion);
-                _context.SaveChanges();
-                FuncionRemoveResponse funcion_removida = new FuncionRemoveResponse
-                {
-                    funcionId = 0,
-                    fecha = funcion.Fecha,
-                    horario = funcion.Horario.ToString(@"hh\:mm")
-                };
-                return funcion_removida;
+                Context.Funciones.Remove(Funcion);
+                await Context.SaveChangesAsync();
+                return Funcion;
             }
             else
             {
-                if (funcion == null)
+                if (Funcion == null)
                 {
                     return null;
                 }
                 else
                 {
-                    FuncionRemoveResponse funcion_removida = new FuncionRemoveResponse
-                    {
-                        funcionId = -1
-                    };
-                    return funcion_removida;
+                    throw new TicketExcepcion("No se puede eliminar la funcion debido a que tiene entradas vendidas");
                 }
             }
         }

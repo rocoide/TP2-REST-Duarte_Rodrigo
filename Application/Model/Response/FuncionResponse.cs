@@ -1,13 +1,13 @@
-﻿namespace Application.Model.Response
+﻿using Domain.Entity;
+
+namespace Application.Model.Response
 {
     public class FuncionResponse
     {
-        public int funcionId { get; set; }
-        public PeliculaResponseShort pelicula { get; set; }
-        public SalaResponse sala { get; set; }
-        public DateTime fecha { get; set; }
-        public string horario { get; set; }
-
-
+        public int FuncionId { get; set; }
+        public PeliculaGetResponse Pelicula { get; set; }
+        public SalaResponse Sala { get; set; }
+        public DateTime Fecha { get; set; }
+        public string Horario { get; set; }
     }
 }

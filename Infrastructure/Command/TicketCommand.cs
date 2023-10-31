@@ -9,11 +9,11 @@ namespace Infrastructure.Command
 {
     public class TicketCommand : ITicketCommand
     {
-        private readonly CineContext _context;
+        private readonly CineContext Context;
 
-        public TicketCommand(CineContext context)
+        public TicketCommand(CineContext Context)
         {
-            _context = context;
+            this.Context = Context;
         }
 
         public async Task<TicketResponse> AddTicket(TicketDTO ticketDTO, int funcionId)
@@ -22,7 +22,7 @@ namespace Infrastructure.Command
             TicketIdResponse ticketId;
             List<Ticket> tickets = new List<Ticket>();
             List<TicketIdResponse> ticketIdResponses = new List<TicketIdResponse>();
-            for (int i = 0; i < ticketDTO.cantidad; i++)
+            for (int i = 0; i < ticketDTO.Cantidad; i++)
             {
                 ticket = new Ticket
                 {
@@ -31,9 +31,9 @@ namespace Infrastructure.Command
                     FuncionId = funcionId
                 };
                 tickets.Add(ticket);
-                _context.Tickets.Add(ticket);
+                Context.Tickets.Add(ticket);
             }
-            _context.SaveChanges();
+            Context.SaveChanges();
 
             foreach (Ticket t in tickets)
             {
@@ -46,7 +46,7 @@ namespace Infrastructure.Command
 
 
 
-            Funcion? funcion = await _context.Funciones
+            Funcion? funcion = await Context.Funciones
                                              .Include(s => s.Peliculas)
                                                  .ThenInclude(m => m.Generos)
                                              .Include(s => s.Salas)
@@ -54,27 +54,27 @@ namespace Infrastructure.Command
 
             FuncionResponse funcionResponse = new FuncionResponse
             {
-                funcionId = funcion.FuncionId,
-                pelicula = new PeliculaResponseShort
+                FuncionId = funcion.FuncionId,
+                Pelicula = new PeliculaGetResponse
                 {
-                    peliculaId = funcion.Peliculas.PeliculaId,
-                    titulo = funcion.Peliculas.Titulo,
-                    poster = funcion.Peliculas.Poster,
-                    genero = new GeneroResponse
+                    PeliculaId = funcion.Peliculas.PeliculaId,
+                    Titulo = funcion.Peliculas.Titulo,
+                    Poster = funcion.Peliculas.Poster,
+                    Genero = new GeneroResponse
                     {
-                        id = funcion.Peliculas.Genero,
-                        nombre = funcion.Peliculas.Generos.Nombre
+                        Id = funcion.Peliculas.Genero,
+                        Nombre = funcion.Peliculas.Generos.Nombre
                     }
 
                 },
-                sala = new SalaResponse
+                Sala = new SalaResponse
                 {
-                    id = funcion.SalaId,
-                    nombre = funcion.Salas.Nombre,
-                    capacidad = funcion.Salas.Capacidad
+                    Id = funcion.SalaId,
+                    Nombre = funcion.Salas.Nombre,
+                    Capacidad = funcion.Salas.Capacidad
                 },
-                fecha = funcion.Fecha,
-                horario = funcion.Horario.ToString(@"hh\:mm")
+                Fecha = funcion.Fecha,
+                Horario = funcion.Horario.ToString(@"hh\:mm")
             };
             TicketResponse ticketResponse = new TicketResponse
             {

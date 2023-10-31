@@ -6,181 +6,135 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TP2_REST_Duarte_Rodrigo.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
-    public class FuncionesController : ControllerBase
+    public class FuncionController : ControllerBase
     {
-        private readonly IFuncionService _serviceFunciones;
-        private readonly ITicketService _serviceTickets;
+        private readonly IFuncionService ServiceFunciones;
+        private readonly ITicketService ServiceTickets;
 
-        public FuncionesController(IFuncionService serviceFunciones, ITicketService serviceTickets)
+        public FuncionController(IFuncionService ServiceFunciones, ITicketService ServiceTickets)
         {
-            _serviceFunciones = serviceFunciones;
-            _serviceTickets = serviceTickets;
+            this.ServiceFunciones = ServiceFunciones;
+            this.ServiceTickets = ServiceTickets;
         }
 
 
+        //terminado
 
-
-        [HttpGet("v1/Funcion")]
-        public async Task<IActionResult> getFunciones(string titulo = null, string fecha = null, int? generoID = null)
+        [HttpGet]
+        [ProducesResponseType(typeof(List<FuncionResponse>), 200)]
+        public async Task<IActionResult> GetFunciones(string? Titulo = null, string? Fecha = null, int? GeneroId = null)
         {
             try
             {
-                List<FuncionResponse> lista = null;
-                List<FuncionResponse> listaFinal = null;
-                //sin filtro, devuelve todas las funciones
-                if ((titulo == null) && (fecha == null) && (generoID == null))
-                {
-                    listaFinal = await _serviceFunciones.getAllFunciones();
-                }
-                if (titulo != null)
-                {
-                    lista = await _serviceFunciones.getFuncionesByTitulo(titulo);
-                    listaFinal = lista;
-                }
-                if (fecha != null)
-                {
-                    DateTime fech = DateTime.Parse(fecha);
-                    lista = await _serviceFunciones.getFuncionesByFecha(fech);
-                    if (listaFinal != null)
-                    {
-                        listaFinal = await _serviceFunciones.compararFuncionResponse(listaFinal, lista);
-                    }
-                    else
-                    {
-                        listaFinal = lista;
-                    }
-                }
-                if (generoID != null)
-                {
-                    lista = await _serviceFunciones.getFuncionesByGenero(generoID);
-                    if (listaFinal != null)
-                    {
-                        listaFinal = await _serviceFunciones.compararFuncionResponse(listaFinal, lista);
-                    }
-                    else
-                    {
-                        listaFinal = lista;
-                    }
-                }
-                if (listaFinal.Count != 0)
-                {
-                    return new JsonResult(listaFinal) { StatusCode = 200 };
-                }
-                else
-                {
-                    Response.Headers.Add("Motivo", "No hay funciones con esos filtros.");
-                    return new JsonResult("No se encontraron funciones.") { StatusCode = 404 };
-                }
+                List<FuncionResponse> ListaResponse = await ServiceFunciones.GetFunciones(Titulo, Fecha, GeneroId);
+                return Ok(ListaResponse);
             }
             catch (Exception)
             {
-                return new JsonResult("Ingrese la fecha en el formato dd-mm.") { StatusCode = 400 };
+                var ObjetoAnonimo = new
+                {
+                    message = "Ingrese la fecha en un formato valido."
+                };
+                return BadRequest(ObjetoAnonimo);
             }
         }
 
-
-
-
-
-
-        [HttpPost("v1/Funcion")]
-        public async Task<IActionResult> AddFuncion(FuncionIdDTO funcionIdDTO)
+        [HttpPost]
+        public async Task<IActionResult> AddFuncion(FuncionDTO FuncionDTO)
         {
             try
             {
-                FuncionResponse resultado = await _serviceFunciones.AddFuncion(funcionIdDTO);
-                if (resultado != null)
-                {
-                    return new JsonResult(resultado) { StatusCode = 201 };
-                }
-                else
-                {
-                    return new JsonResult("No se pudo agregar correctamente la funcion.") { StatusCode = 409 };
-                }
+                FuncionResponse? Resultado = await ServiceFunciones.AddFuncion(FuncionDTO);
+                return new JsonResult(Resultado) { StatusCode = 201 };
             }
-            catch (Exception ex)
+            catch (Exception Ex)
             {
-                return new JsonResult("Por favor ingrese valores validos en los campos") { StatusCode = 400 };
+                return Conflict(Ex.Message);
             }
         }
 
-
-
-
-        [HttpGet("v1/Funcion/{id}")]
-        public async Task<IActionResult> getFuncionByID(int id)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetFuncionByID(int Id)
         {
             try
             {
-                FuncionResponse? funcionDTO = await _serviceFunciones.getFuncionByID(id);
-                if (funcionDTO == null)
+                FuncionResponse? FuncionResponse = await ServiceFunciones.GetFuncionById(Id);
+                if (FuncionResponse == null)
                 {
                     return NotFound("Funcion no encontrada.");
                 }
                 else
                 {
-                    return new JsonResult(funcionDTO) { StatusCode = 200 };
+                    return Ok(FuncionResponse);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return new JsonResult("Por favor ingrese los campos en el un formato correspondientes.") { StatusCode = 400 };
+                var ObjetoAnonimo = new
+                {
+                    Message = "Por favor ingrese los campos en un formato correspondientes."
+                };
+                return BadRequest(ObjetoAnonimo); //no llega nunca aca
             }
         }
 
-
-
-
-        [HttpDelete("v1/Funcion/{id}")]
-        public async Task<IActionResult> removeFuncion(int id)
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> RemoveFuncion(int Id)
         {
             try
             {
-                FuncionRemoveResponse? resultado = await _serviceFunciones.removeFuncion(id);
-                if (resultado == null)
+                FuncionRemoveResponse? Resultado = await ServiceFunciones.RemoveFuncion(Id);
+                if (Resultado == null)
                 {
                     return new JsonResult("No se encontre la funcion a eliminar.") { StatusCode = 404 };
                 }
                 else
                 {
-                    if (resultado.funcionId == 0)
-                    {
-                        return new JsonResult(resultado) { StatusCode = 200 };
-                    }
-                    else
-                    {
-                        return new JsonResult("No se puede eliminar la funcion debido a que tiene entradas vendidas") { StatusCode = 409 };
-                    }
+                    return new JsonResult(Resultado) { StatusCode = 200 };
                 }
             }
             catch (FormatException)
             {
-                return new JsonResult("Por favor ingrese los campos en el formato correspondientes.") { StatusCode = 400 };
+                return BadRequest("Por favor ingrese los campos en el formato correspondientes.");
             }
-
+            catch (Exception Ex) 
+            {
+                return new JsonResult(Ex.Message) { StatusCode = 409 };
+            }
         }
 
-
-
-
-
-        [HttpGet("/api/v1/Funcion/{id}/tickets")]
-        public async Task<IActionResult> getCantTicketsDisponibles(int id)
+        [HttpGet("{Id}/tickets")]
+        public async Task<IActionResult> GetCantTicketsDisponibles(int Id)
         {
             try
             {
-                int? resultado = await _serviceTickets.getCantTicketsDisponibles(id);
-                if (resultado == null)
+                int? Resultado = await ServiceTickets.GetCantTicketsDisponibles(Id);
+                if (Resultado == null)
                 {
-                    return NotFound("No existe la funcion solicitada.");
+                    var ObjetoAnonimo = new
+                    {
+                        Message = "No existe la funcion " + Id + "."
+                    };
+                    return NotFound(ObjetoAnonimo);
                 }
-                return new JsonResult(resultado) { StatusCode = 200 };
+                else 
+                {
+                    var ObjetoAnonimo = new
+                    {
+                        Cantidad = Resultado
+                    };
+                    return Ok(ObjetoAnonimo);
+                }
             }
             catch (FormatException)
             {
-                return new JsonResult("Por favor llene adecuadamene los campos.");
+                var ObjetoAnonimo = new
+                {
+                    Message = "Por favor llene adecuadamene los campos."
+                };
+                return BadRequest(ObjetoAnonimo);
             }
         }
 
@@ -188,32 +142,41 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
 
 
 
-        [HttpPost("/api/v1/Funcion/{id}/tickets")]
-        public async Task<IActionResult> AddTicket(TicketDTO ticketDTO, int id)
+        [HttpPost("{Id}/tickets")]
+        public async Task<IActionResult> AddTicket(TicketDTO TicketDTO, int Id)
         {
             try
             {
-                int? tickets_disponibles = await _serviceTickets.getCantTicketsDisponibles(id);
+                int? tickets_disponibles = await ServiceTickets.GetCantTicketsDisponibles(Id);
                 if (tickets_disponibles == null)
                 {
                     return NotFound("No se ha encontrado la funcion.");
                 }
                 else
                 {
-                    if (tickets_disponibles < ticketDTO.cantidad)
+                    if (tickets_disponibles < TicketDTO.Cantidad)
                     {
                         return Ok("No hay suficientes tickets disponibles para esta funcion.");
                     }
                     else
                     {
-                        TicketResponse ticketResponse = await _serviceTickets.AddTicket(ticketDTO, id);
+                        TicketResponse ticketResponse = await ServiceTickets.AddTicket(TicketDTO, Id);
                         return new JsonResult(ticketResponse) { StatusCode = 201 };
                     }
                 }
             }
-            catch
+            catch (FormatException)
             {
-                return new JsonResult("Por favor ingrese un valor en formato numerico en cantidad");
+                var ObjetoAnonimo = new
+                {
+                    Message = "Por favor ingrese un valor en formato numerico en cantidad."
+                };
+                return BadRequest(ObjetoAnonimo);
+            }
+            catch (Exception) 
+            {
+
+                return Conflict();
             }
         }
 

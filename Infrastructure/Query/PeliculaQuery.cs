@@ -16,56 +16,48 @@ namespace Infrastructure.Query
             _context = context;
         }
 
-        public async Task<List<PeliculaDTO>> getPeliculas()
+        public async Task<List<Pelicula>> GetPeliculas()
         {
-            List<PeliculaDTO> peliculas = _context.Peliculas
+            List<Pelicula> peliculas = _context.Peliculas
                                                   .Include(f => f.Generos)
-                                                  .Select(s => new PeliculaDTO
-                                                  {
-                                                      Titulo = s.Titulo,
-                                                      Sinopsis = s.Sinopsis,
-                                                      Poster = s.Poster,
-                                                      Trailer = s.Trailer,
-                                                      Genero = s.Generos.Nombre
-                                                  })
                                                   .ToList();
             return peliculas;
         }
 
-        public async Task<PeliculaResponseLong> getPelicula(int id)
+        public async Task<Pelicula> GetPeliculaById(int id)
         {
-            Pelicula? pelicula = _context.Peliculas
+            Pelicula? Pelicula = _context.Peliculas
                                         .Include(f => f.Generos)
                                         .Include(s => s.Funciones)
                                         .FirstOrDefault(s => s.PeliculaId == id);
-            if (pelicula != null)
+            if (Pelicula != null)
             {
-                PeliculaResponseLong peliculaResponse = new PeliculaResponseLong
-                {
-                    peliculaId = id,
-                    titulo = pelicula.Titulo,
-                    sinopsis = pelicula.Sinopsis,
-                    poster = pelicula.Poster,
-                    trailer = pelicula.Trailer,
-                    genero = new GeneroResponse
-                    {
-                        id = pelicula.Generos.GeneroId,
-                        nombre = pelicula.Generos.Nombre
-                    },
-                    funciones = new List<FuncionResponseShort>()
-                };
-                FuncionResponseShort funcionShort;
-                foreach (Funcion funcion in pelicula.Funciones)
-                {
-                    funcionShort = new FuncionResponseShort
-                    {
-                        funcionId = funcion.FuncionId,
-                        fecha = funcion.Fecha,
-                        horario = funcion.Horario.ToString(@"hh\:mm")
-                    };
-                    peliculaResponse.funciones.Add(funcionShort);
-                }
-                return peliculaResponse;
+                //PeliculaResponseLong peliculaResponse = new PeliculaResponseLong
+                //{
+                //    peliculaId = id,
+                //    titulo = pelicula.Titulo,
+                //    sinopsis = pelicula.Sinopsis,
+                //    poster = pelicula.Poster,
+                //    trailer = pelicula.Trailer,
+                //    genero = new GeneroResponse
+                //    {
+                //        Id = pelicula.Generos.GeneroId,
+                //        Nombre = pelicula.Generos.Nombre
+                //    },
+                //    funciones = new List<FuncionResponseShort>()
+                //};
+                //FuncionResponseShort funcionShort;
+                //foreach (Funcion funcion in pelicula.Funciones)
+                //{
+                //    funcionShort = new FuncionResponseShort
+                //    {
+                //        funcionId = funcion.FuncionId,
+                //        fecha = funcion.Fecha,
+                //        horario = funcion.Horario.ToString(@"hh\:mm")
+                //    };
+                //    peliculaResponse.funciones.Add(funcionShort);
+                //}
+                return Pelicula;
             }
             else
             {

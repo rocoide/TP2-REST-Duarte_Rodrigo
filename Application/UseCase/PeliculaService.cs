@@ -2,30 +2,37 @@
 using Application.Model.DTO;
 using Application.Model.Response;
 using Domain.Entity;
+using System.ComponentModel;
 
 namespace Application.UseCase
 {
     public class PeliculaService : IPeliculaService
     {
-        private readonly IPeliculaCommand _command;
-        private readonly IPeliculaQuery _query;
+        private readonly IPeliculaCommand PeliculaCommand;
+        private readonly IPeliculaQuery PeliculaQuery;
 
-        public PeliculaService(IPeliculaCommand command, IPeliculaQuery query)
+        public PeliculaService(IPeliculaCommand PeliculaCommand, IPeliculaQuery PeliculaQuery)
         {
-            _command = command;
-            _query = query;
+            this.PeliculaCommand = PeliculaCommand;
+            this.PeliculaQuery = PeliculaQuery;
         }
 
-        public async Task<List<PeliculaDTO>> getPeliculas()
+        public async Task<List<PeliculaDTO>> GetPeliculas()
         {
-            List<PeliculaDTO> peliculas = await _query.getPeliculas();
-            return peliculas;
+            List<Pelicula> peliculas = await PeliculaQuery.GetPeliculas();
+            //return peliculas;
+
+            List<PeliculaDTO> lista = new List<PeliculaDTO>();
+            return lista;
         }
 
-        public async Task<PeliculaResponseLong> getPelicula(int id)
+        public async Task<PeliculaResponseLong?> GetPeliculaById(int PeliculaId)
         {
-            PeliculaResponseLong pelicula = await _query.getPelicula(id);
-            return pelicula;
+            Pelicula Pelicula = await PeliculaQuery.GetPeliculaById(PeliculaId);
+            //return pelicula;
+
+            PeliculaResponseLong? lista = null;
+            return lista;
         }
         public async Task<bool> validarCampos(PeliculaIdDTO peliculaIdDTO)
         {
@@ -59,7 +66,7 @@ namespace Application.UseCase
                 Trailer = peliculaIdDTO.Trailer,
                 Genero = peliculaIdDTO.GeneroId
             };
-            return await _command.updatePelicula(pelicula);
+            return await PeliculaCommand.updatePelicula(pelicula);
 
         }
 

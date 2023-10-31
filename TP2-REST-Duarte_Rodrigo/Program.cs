@@ -1,5 +1,6 @@
 using Application.Interface.Funciones;
 using Application.Interface.Peliculas;
+using Application.Interface.Salas;
 using Application.Interface.Tickets;
 using Application.UseCase;
 using Infrastructure.Command;
@@ -34,6 +35,8 @@ builder.Services.AddTransient<IFuncionQuery, FuncionQuery>();
 builder.Services.AddTransient<ITicketService, TicketService>();
 builder.Services.AddTransient<ITicketCommand, TicketCommand>();
 builder.Services.AddTransient<ITicketQuery, TicketQuery>();
+
+builder.Services.AddTransient<ISalaQuery, SalaQuery>();
 
 var app = builder.Build();
 

@@ -9,11 +9,11 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
     [ApiController]
     public class PeliculasController : ControllerBase
     {
-        private readonly IPeliculaService _service;
+        private readonly IPeliculaService Service;
 
         public PeliculasController(IPeliculaService service)
         {
-            _service = service;
+            Service = service;
         }
 
 
@@ -24,14 +24,14 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
         {
             try
             {
-                PeliculaResponseLong result = await _service.getPelicula(id);
-                if (result == null)
+                PeliculaResponseLong Result = await Service.GetPeliculaById(id);
+                if (Result == null)
                 {
                     return new JsonResult("No se encontro la pelicula solicitada") { StatusCode = 404 };
                 }
                 else
                 {
-                    return new JsonResult(result) { StatusCode = 200 };
+                    return new JsonResult(Result) { StatusCode = 200 };
                 }
             }
             catch (Exception)
@@ -50,10 +50,10 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
         {
             try
             {
-                bool cumple = await _service.validarCampos(peliculaIdDTO);
+                bool cumple = await Service.validarCampos(peliculaIdDTO);
                 if (cumple)
                 {
-                    PeliculaResponseLong resultado = await _service.updatePelicula(peliculaIdDTO, id);
+                    PeliculaResponseLong resultado = await Service.updatePelicula(peliculaIdDTO, id);
                     if (resultado != null)
                     {
                         return new JsonResult(resultado) { StatusCode = 201 };

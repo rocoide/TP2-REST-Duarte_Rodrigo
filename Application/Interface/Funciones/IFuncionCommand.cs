@@ -5,7 +5,7 @@ namespace Application.Interface.Funciones
 {
     public interface IFuncionCommand
     {
-        Task<FuncionResponse> AddFuncion(Funcion fun);
-        Task<FuncionRemoveResponse?> removeFuncion(int funcionID);
+        Task<Funcion?> AddFuncion(Funcion Fun);
+        Task<Funcion?> RemoveFuncion(int FuncionId);
     }
 }

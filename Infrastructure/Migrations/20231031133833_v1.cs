@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -7,22 +8,22 @@
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class tp2_rest_Duarte : Migration
+    public partial class v1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Genero",
+                name: "Generos",
                 columns: table => new
                 {
                     GeneroId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                    Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Genero", x => x.GeneroId);
+                    table.PrimaryKey("PK_Generos", x => x.GeneroId);
                 });
 
             migrationBuilder.CreateTable(
@@ -31,7 +32,7 @@ namespace Infrastructure.Migrations
                 {
                     SalaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Capacidad = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -45,19 +46,19 @@ namespace Infrastructure.Migrations
                 {
                     PeliculaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Titulo = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    Sinopsis = table.Column<string>(type: "nvarchar(255)", nullable: false),
-                    Poster = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    Trailer = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    GeneroId = table.Column<int>(type: "int", nullable: false)
+                    Titulo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Sinopsis = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Poster = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Trailer = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Genero = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Peliculas", x => x.PeliculaId);
                     table.ForeignKey(
-                        name: "FK_Peliculas_Genero_GeneroId",
-                        column: x => x.GeneroId,
-                        principalTable: "Genero",
+                        name: "FK_Peliculas_Generos_Genero",
+                        column: x => x.Genero,
+                        principalTable: "Generos",
                         principalColumn: "GeneroId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -95,22 +96,22 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     TicketId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    funcionID = table.Column<int>(type: "int", nullable: false),
-                    Usuario = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                    FuncionId = table.Column<int>(type: "int", nullable: false),
+                    Usuario = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tickets", x => x.TicketId);
+                    table.PrimaryKey("PK_Tickets", x => new { x.TicketId, x.FuncionId });
                     table.ForeignKey(
-                        name: "FK_Tickets_Funciones_funcionID",
-                        column: x => x.funcionID,
+                        name: "FK_Tickets_Funciones_FuncionId",
+                        column: x => x.FuncionId,
                         principalTable: "Funciones",
                         principalColumn: "FuncionId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "Genero",
+                table: "Generos",
                 columns: new[] { "GeneroId", "Nombre" },
                 values: new object[,]
                 {
@@ -138,7 +139,7 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Peliculas",
-                columns: new[] { "PeliculaId", "GeneroId", "Poster", "Sinopsis", "Titulo", "Trailer" },
+                columns: new[] { "PeliculaId", "Genero", "Poster", "Sinopsis", "Titulo", "Trailer" },
                 values: new object[,]
                 {
                     { 1, 3, "https://th.bing.com/th/id/OIP.NNDzj9c4s1ntnvDOwTDNagHaLH?w=115&h=180&c=7&r=0&o=5&pid=1.7", "Jake Sully, ex-marine en Pandora, conoce a los Na'vi y se enamora de Neytiri. Enfrenta un dilema moral: ayudar en la extracción de un mineral o proteger a los Na'vi y su hogar.", "Avatar", "https://www.youtube.com/watch?v=AZS_d_hS2dM&ab_channel=20thCenturyStudiosEspa%C3%B1a" },
@@ -174,14 +175,14 @@ namespace Infrastructure.Migrations
                 column: "SalaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Peliculas_GeneroId",
+                name: "IX_Peliculas_Genero",
                 table: "Peliculas",
-                column: "GeneroId");
+                column: "Genero");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_funcionID",
+                name: "IX_Tickets_FuncionId",
                 table: "Tickets",
-                column: "funcionID");
+                column: "FuncionId");
         }
 
         /// <inheritdoc />
@@ -200,7 +201,7 @@ namespace Infrastructure.Migrations
                 name: "Salas");
 
             migrationBuilder.DropTable(
-                name: "Genero");
+                name: "Generos");
         }
     }
 }

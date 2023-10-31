@@ -5,7 +5,7 @@ namespace Application.Interface.Tickets
 {
     public interface ITicketService
     {
-        Task<int?> getCantTicketsDisponibles(int funcionID);
-        Task<TicketResponse> AddTicket(TicketDTO ticketDTO, int id);
+        Task<int?> GetCantTicketsDisponibles(int FuncionId);
+        Task<TicketResponse> AddTicket(TicketDTO TicketDTO, int id);
     }
 }

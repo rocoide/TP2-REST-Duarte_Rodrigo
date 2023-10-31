@@ -3,6 +3,6 @@
     public class TicketDTO
     {
         public string Usuario { get; set; }
-        public int cantidad { get; set; }
+        public int Cantidad { get; set; }
     }
 }
