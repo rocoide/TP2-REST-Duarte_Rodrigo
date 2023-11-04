@@ -1,11 +1,11 @@
 ﻿using Application.Model.DTO;
-using Application.Model.Response;
+using Application.Model.Response.Tickets;
 
 namespace Application.Interface.Tickets
 {
     public interface ITicketService
     {
-        Task<int?> GetCantTicketsDisponibles(int FuncionId);
-        Task<TicketResponse> AddTicket(TicketDTO TicketDTO, int id);
+        Task<TicketCantidadResponse> GetCantTicketsDisponibles(int FuncionId);
+        Task<TicketResponse> AddTicket(TicketDTO TicketDTO, int FuncionId);
     }
 }

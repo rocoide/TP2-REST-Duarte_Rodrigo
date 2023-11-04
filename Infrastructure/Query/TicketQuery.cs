@@ -14,22 +14,10 @@ namespace Infrastructure.Query
             this.Context = Context;
         }
 
-        public async Task<int?> GetCantTicketsDisponibles(int FuncionId)
+        public async Task<int> GetCantTicketsVendidos(int FuncionId)
         {
-            int Resultado;
-            Funcion? Funcion = await Context.Funciones.Include(m => m.Salas).FirstOrDefaultAsync(s => s.FuncionId == FuncionId);
-            if (Funcion == null)
-            {
-                return null;
-            }
-            else
-            {
-                List<Ticket> ListaTickets = Context.Tickets
-                                                    .Where(s => s.FuncionId == FuncionId)
-                                                    .ToList();
-                Resultado = (Funcion.Salas.Capacidad - ListaTickets.Count);
-            }
-            return Resultado;
+            Funcion? Funcion = await Context.Funciones.Include(m => m.Salas).Include(f => f.Tickets).FirstOrDefaultAsync(s => s.FuncionId == FuncionId);
+            return Funcion.Tickets.Count;
         }
     }
 }

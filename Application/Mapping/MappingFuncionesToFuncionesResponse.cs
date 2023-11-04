@@ -1,4 +1,6 @@
 ﻿using Application.Model.Response;
+using Application.Model.Response.Funciones;
+using Application.Model.Response.Peliculas;
 using Domain.Entity;
 
 namespace Application.Mapping

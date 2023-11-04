@@ -1,6 +1,4 @@
-﻿using Domain.Entity;
-
-namespace Application.Model.Response
+﻿namespace Application.Model.Response.Peliculas
 {
     public class PeliculaGetResponse
     {

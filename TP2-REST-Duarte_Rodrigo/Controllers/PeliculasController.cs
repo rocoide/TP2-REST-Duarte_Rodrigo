@@ -1,77 +1,85 @@
-﻿using Application.Interface.Peliculas;
+﻿using Application.Excepcions;
+using Application.Interface.Peliculas;
 using Application.Model.DTO;
-using Application.Model.Response;
+using Application.Model.Response.Peliculas;
+using Application.Validation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TP2_REST_Duarte_Rodrigo.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class PeliculasController : ControllerBase
     {
-        private readonly IPeliculaService Service;
+        private readonly IPeliculaService PeliculaService;
 
-        public PeliculasController(IPeliculaService service)
+        public PeliculasController(IPeliculaService PeliculaService)
         {
-            Service = service;
+            this.PeliculaService = PeliculaService;
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPelicula(int id)
+        {
+            try
+            {
+                PeliculaResponse Result = await PeliculaService.GetPeliculaById(id);
+                return Ok(Result);
+            }
+            catch (FormatException Ex)
+            {
+                var ObjetoAnonimo = new
+                {
+                    Message = Ex.Message
+                };
+                return BadRequest(ObjetoAnonimo);
+            }
+            catch (NotFoundExcepcion Ex)
+            {
+                var ObjetoAnonimo = new
+                {
+                    Message = Ex.Message
+                };
+                return NotFound(ObjetoAnonimo);
+            }
         }
 
 
 
 
-        [HttpGet("/api/v1/Pelicula/{id}")]
-        public async Task<IActionResult> getPelicula(int id)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePelicula(PeliculaDTO PeliculaDTO, int id)
         {
             try
             {
-                PeliculaResponseLong Result = await Service.GetPeliculaById(id);
-                if (Result == null)
-                {
-                    return new JsonResult("No se encontro la pelicula solicitada") { StatusCode = 404 };
-                }
-                else
-                {
-                    return new JsonResult(Result) { StatusCode = 200 };
-                }
+                ValidarCamposPelicula.Validar(PeliculaDTO);
+                PeliculaResponse PeliculaResponse = await PeliculaService.UpdatePelicula(PeliculaDTO, id);
+                return Ok(PeliculaResponse);
             }
-            catch (Exception)
+            catch (FormatException Ex)
             {
-                return new JsonResult("Por favor ingrese un valor valido.") { StatusCode = 400 };
-            }
-        }
-
-
-
-
-
-
-        [HttpPut("/api/v1/Pelicula/{id}")]
-        public async Task<IActionResult> updatePelicula(PeliculaIdDTO peliculaIdDTO, int id)
-        {
-            try
-            {
-                bool cumple = await Service.validarCampos(peliculaIdDTO);
-                if (cumple)
+                var ObjetoAnonimo = new
                 {
-                    PeliculaResponseLong resultado = await Service.updatePelicula(peliculaIdDTO, id);
-                    if (resultado != null)
-                    {
-                        return new JsonResult(resultado) { StatusCode = 201 };
-                    }
-                    return NotFound("No se ha encontrado la pelicula");
-                }
-                else
+                    Message = Ex.Message
+                };
+                return BadRequest(ObjetoAnonimo);
+            }
+            catch (NotFoundExcepcion Ex)
+            {
+                var ObjetoAnonimo = new
                 {
-                    return new JsonResult("Asegurese de que los campos cumplan con las especificaciones.") { StatusCode = 400 };
-                }
+                    Message = Ex.Message
+                };
+                return NotFound(ObjetoAnonimo);
             }
-            catch (AggregateException)
+            catch (ConflicExcepcion Ex)
             {
-                return new JsonResult("No se ha podido actualizar la pelicula debido a que existe otra con el mismo titulo.") { StatusCode = 409 };
-            }
-            catch (Exception)
-            {
-                return new JsonResult("Por favor ingrese un ID de genero entre los valores 1-20.");
+                var ObjetoAnonimo = new
+                {
+                    Message = Ex.Message
+                };
+                return Conflict(ObjetoAnonimo);
             }
         }
 

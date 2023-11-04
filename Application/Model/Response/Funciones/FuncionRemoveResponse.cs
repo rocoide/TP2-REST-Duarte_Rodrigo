@@ -1,4 +1,4 @@
-﻿namespace Application.Model.Response
+﻿namespace Application.Model.Response.Funciones
 {
     public class FuncionRemoveResponse
     {

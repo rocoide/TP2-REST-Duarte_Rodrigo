@@ -1,6 +1,6 @@
-﻿using Domain.Entity;
+﻿using Application.Model.Response.Peliculas;
 
-namespace Application.Model.Response
+namespace Application.Model.Response.Funciones
 {
     public class FuncionResponse
     {

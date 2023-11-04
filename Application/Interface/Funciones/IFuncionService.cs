@@ -1,5 +1,5 @@
 ﻿using Application.Model.DTO;
-using Application.Model.Response;
+using Application.Model.Response.Funciones;
 
 namespace Application.Interface.Funciones
 {
@@ -7,15 +7,11 @@ namespace Application.Interface.Funciones
     {
         Task<List<FuncionResponse>> GetFunciones(string? Titulo, string? Fecha, int? GeneroId);
         Task<FuncionResponse> AddFuncion(FuncionDTO FuncionDTO);
-        Task<FuncionResponse?> GetFuncionById(int FuncionId);
+        Task<FuncionResponse> GetFuncionById(int FuncionId);
+        Task<FuncionRemoveResponse> RemoveFuncion(int FuncionId);
 
 
 
 
-        Task<FuncionRemoveResponse?> RemoveFuncion(int FuncionId);
-        
-        
-        
-  
     }
 }

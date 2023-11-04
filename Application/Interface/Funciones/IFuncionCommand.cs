@@ -1,5 +1,4 @@
-﻿using Application.Model.Response;
-using Domain.Entity;
+﻿using Domain.Entity;
 
 namespace Application.Interface.Funciones
 {

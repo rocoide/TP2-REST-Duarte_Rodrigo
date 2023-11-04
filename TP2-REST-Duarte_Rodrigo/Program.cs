@@ -38,6 +38,8 @@ builder.Services.AddTransient<ITicketQuery, TicketQuery>();
 
 builder.Services.AddTransient<ISalaQuery, SalaQuery>();
 
+builder.Services.AddCors(x => x.AddDefaultPolicy(c => c.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod()));
+//var Header = new HeaderOption();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -46,6 +48,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 

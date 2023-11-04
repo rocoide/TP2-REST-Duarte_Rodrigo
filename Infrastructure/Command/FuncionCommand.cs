@@ -1,6 +1,4 @@
-﻿using Application.Excepcions;
-using Application.Interface.Funciones;
-using Application.Model.Response;
+﻿using Application.Interface.Funciones;
 using Domain.Entity;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +29,7 @@ namespace Infrastructure.Command
                                                                                  (f.Horario >= Fun.Horario && f.Horario < HoraFin) ||
                                                                                  (f.Horario <= Fun.Horario && f.Horario > Aux)
                                                                               )
-                                                    );
+                                                                        );
             if (FuncionSolapada == null)
             {
                 Context.Funciones.Add(Fun);
@@ -51,26 +49,18 @@ namespace Infrastructure.Command
 
         public async Task<Funcion?> RemoveFuncion(int FuncionId)
         {
-            Funcion? Funcion = await Context.Funciones.FindAsync(FuncionId);
-            List<Ticket> ListaTickets = await Context.Tickets
-                                                       .Where(s => s.FuncionId == FuncionId)
-                                                       .ToListAsync();
-            if ((Funcion != null) && (ListaTickets.Count == 0))
+            List<Ticket> ListaTickets = await Context.Tickets.Where(s => s.FuncionId == FuncionId)
+                                                             .ToListAsync();
+            if (ListaTickets.Count == 0)
             {
+                Funcion Funcion = await Context.Funciones.FindAsync(FuncionId);
                 Context.Funciones.Remove(Funcion);
                 await Context.SaveChangesAsync();
                 return Funcion;
             }
             else
             {
-                if (Funcion == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    throw new TicketExcepcion("No se puede eliminar la funcion debido a que tiene entradas vendidas");
-                }
+                return null;
             }
         }
     }

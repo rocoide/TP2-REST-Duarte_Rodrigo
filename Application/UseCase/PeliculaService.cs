@@ -1,8 +1,9 @@
-﻿using Application.Interface.Peliculas;
+﻿using Application.Excepcions;
+using Application.Interface.Peliculas;
+using Application.Mapping;
 using Application.Model.DTO;
-using Application.Model.Response;
+using Application.Model.Response.Peliculas;
 using Domain.Entity;
-using System.ComponentModel;
 
 namespace Application.UseCase
 {
@@ -17,59 +18,34 @@ namespace Application.UseCase
             this.PeliculaQuery = PeliculaQuery;
         }
 
-        public async Task<List<PeliculaDTO>> GetPeliculas()
+        public async Task<PeliculaResponse> GetPeliculaById(int PeliculaId)
         {
-            List<Pelicula> peliculas = await PeliculaQuery.GetPeliculas();
-            //return peliculas;
-
-            List<PeliculaDTO> lista = new List<PeliculaDTO>();
-            return lista;
-        }
-
-        public async Task<PeliculaResponseLong?> GetPeliculaById(int PeliculaId)
-        {
-            Pelicula Pelicula = await PeliculaQuery.GetPeliculaById(PeliculaId);
-            //return pelicula;
-
-            PeliculaResponseLong? lista = null;
-            return lista;
-        }
-        public async Task<bool> validarCampos(PeliculaIdDTO peliculaIdDTO)
-        {
-            if (peliculaIdDTO.Titulo.Length > 50)
+            Pelicula? Pelicula = await PeliculaQuery.GetPeliculaById(PeliculaId);
+            if (Pelicula == null)
             {
-                return false;
+                throw new NotFoundExcepcion("No Existe la pelicula solicitada.");
             }
-            if (peliculaIdDTO.Sinopsis.Length > 255)
-            {
-                return false;
-            }
-            if (peliculaIdDTO.Poster.Length > 100)
-            {
-                return false;
-            }
-            if (peliculaIdDTO.Trailer.Length > 100)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public async Task<PeliculaResponseLong> updatePelicula(PeliculaIdDTO peliculaIdDTO, int peliculaID)
-        {
-            Pelicula pelicula = new Pelicula
-            {
-                PeliculaId = peliculaID,
-                Titulo = peliculaIdDTO.Titulo,
-                Sinopsis = peliculaIdDTO.Sinopsis,
-                Poster = peliculaIdDTO.Poster,
-                Trailer = peliculaIdDTO.Trailer,
-                Genero = peliculaIdDTO.GeneroId
-            };
-            return await PeliculaCommand.updatePelicula(pelicula);
-
+            MappingPeliculaToPeliculaResponse Mapping = new MappingPeliculaToPeliculaResponse();
+            PeliculaResponse PeliculaResponse = Mapping.Map(Pelicula);
+            return PeliculaResponse;
         }
 
 
+        public async Task<PeliculaResponse> UpdatePelicula(PeliculaDTO PeliculaDTO, int PeliculaId)
+        {
+            Pelicula? Pelicula = await PeliculaQuery.GetPeliculaById(PeliculaId);
+            if (Pelicula == null)
+            {
+                throw new NotFoundExcepcion("No existe la pelicula solicitada.");
+            }
+            Pelicula = await PeliculaCommand.UpdatePelicula(PeliculaDTO, PeliculaId);
+            if (Pelicula == null)
+            {
+                throw new ConflicExcepcion("Ya existe una pelicula con ese titulo en cartelera.");
+            }
+            MappingPeliculaToPeliculaResponse Mapping = new MappingPeliculaToPeliculaResponse();
+            PeliculaResponse PeliculaResponse = Mapping.Map(Pelicula);
+            return PeliculaResponse;
+        }
     }
 }

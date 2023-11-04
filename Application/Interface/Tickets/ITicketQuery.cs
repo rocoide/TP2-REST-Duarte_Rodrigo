@@ -2,6 +2,6 @@
 {
     public interface ITicketQuery
     {
-        Task<int?> GetCantTicketsDisponibles(int FuncionId);
+        Task<int> GetCantTicketsVendidos(int FuncionId);
     }
 }

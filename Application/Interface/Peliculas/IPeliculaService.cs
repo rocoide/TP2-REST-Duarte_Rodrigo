@@ -1,13 +1,11 @@
 ﻿using Application.Model.DTO;
-using Application.Model.Response;
+using Application.Model.Response.Peliculas;
 
 namespace Application.Interface.Peliculas
 {
     public interface IPeliculaService
     {
-        Task<List<PeliculaDTO>> GetPeliculas();
-        Task<PeliculaResponseLong> GetPeliculaById(int PeliculaId);
-        Task<bool> validarCampos(PeliculaIdDTO peliculaIdDTO);
-        Task<PeliculaResponseLong> updatePelicula(PeliculaIdDTO peliculaIdDTO, int peliculaID);
+        Task<PeliculaResponse> GetPeliculaById(int PeliculaId);
+        Task<PeliculaResponse> UpdatePelicula(PeliculaDTO PeliculaDTO, int PeliculaId);
     }
 }

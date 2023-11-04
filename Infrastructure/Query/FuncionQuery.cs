@@ -1,5 +1,4 @@
 ﻿using Application.Interface.Funciones;
-using Application.Model.Response;
 using Domain.Entity;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +19,7 @@ namespace Infrastructure.Query
             List<Funcion> ListaFuncion = await Context.Funciones
                                                       .Include(m => m.Peliculas)
                                                         .ThenInclude(f => f.Generos)
-                                                      .Include(m => m.Salas)    
+                                                      .Include(m => m.Salas)
                                                       .Where(s => (Titulo != null ? (s.Peliculas.Titulo == Titulo) : true) &&
                                                                   (Fecha != null ? (s.Fecha.Year == DateTime.Parse(Fecha).Year &&
                                                                                     s.Fecha.Month == DateTime.Parse(Fecha).Month &&
@@ -32,7 +31,7 @@ namespace Infrastructure.Query
         }
 
 
-        public async Task<Funcion?> GetFuncionByID(int FuncionId)
+        public async Task<Funcion?> GetFuncionById(int FuncionId)
         {
             Funcion? Funcion = await Context.Funciones
                                             .Include(m => m.Salas)

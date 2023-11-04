@@ -4,7 +4,7 @@ using Application.Interface.Peliculas;
 using Application.Interface.Salas;
 using Application.Mapping;
 using Application.Model.DTO;
-using Application.Model.Response;
+using Application.Model.Response.Funciones;
 using Domain.Entity;
 
 namespace Application.UseCase
@@ -34,15 +34,15 @@ namespace Application.UseCase
 
         public async Task<FuncionResponse> AddFuncion(FuncionDTO FuncionDTO)
         {
-            Sala? Sala = await SalaQuery.GetSalaById(FuncionDTO.SalaId);
-            if (Sala == null) 
+            Sala? Sala = await SalaQuery.GetSalaById(FuncionDTO.Sala);
+            if (Sala == null)
             {
-                throw new SalaExcepcion("La sala ingresada no existe.");
+                throw new NotFoundExcepcion("La sala ingresada no existe.");
             }
-            Pelicula? Pelicula = await PeliculaQuery.GetPeliculaById(FuncionDTO.PeliculaId);
+            Pelicula? Pelicula = await PeliculaQuery.GetPeliculaById(FuncionDTO.Pelicula);
             if (Pelicula == null)
             {
-                throw new PeliculaExcepcion("La pelicula ingresada ingresada no existe.");
+                throw new NotFoundExcepcion("La pelicula ingresada ingresada no existe.");
             }
             MapFuncionDTOToFuncion Mapping = new MapFuncionDTOToFuncion();
             Funcion? Fun = Mapping.Map(FuncionDTO);
@@ -50,7 +50,7 @@ namespace Application.UseCase
             Fun = await FuncionCommand.AddFuncion(Fun);
             if (Fun == null)
             {
-                throw new HorarioExcepcion("No se pudo agregar correctamente la funcion debido a que ese horario se encuentra ocupado.");
+                throw new ConflicExcepcion("No se pudo agregar correctamente la funcion debido a que ese horario se encuentra ocupado.");
             }
             else
             {
@@ -58,39 +58,30 @@ namespace Application.UseCase
                 return FuncionResponse;
             }
         }
-    
 
-
-
-        public async Task<FuncionResponse?> GetFuncionById(int FuncionId)
+        public async Task<FuncionResponse> GetFuncionById(int FuncionId)
         {
-            Funcion? Funcion = await FuncionQuery.GetFuncionByID(FuncionId);
+            Funcion? Funcion = await FuncionQuery.GetFuncionById(FuncionId);
             if (Funcion == null)
             {
-                return null;
+                throw new NotFoundExcepcion("No se encontro la funcion solicitada.");
             }
             MappingFuncionesToFuncionesResponse Mapping = new MappingFuncionesToFuncionesResponse();
             FuncionResponse FuncionResponse = Mapping.Map(Funcion);
             return FuncionResponse;
         }
 
-       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        public async Task<FuncionRemoveResponse?> RemoveFuncion(int FuncionId)
+        public async Task<FuncionRemoveResponse> RemoveFuncion(int FuncionId)
         {
-            Funcion? Funcion = await FuncionCommand.RemoveFuncion(FuncionId);
+            Funcion? Funcion = await FuncionQuery.GetFuncionById(FuncionId);
             if (Funcion == null)
             {
-                return null;
+                throw new NotFoundExcepcion("No se encontro la funcion a eliminar.");
+            }
+            Funcion = await FuncionCommand.RemoveFuncion(FuncionId);
+            if (Funcion == null)
+            {
+                throw new ConflicExcepcion("No se puede eliminar la funcion debido a que tiene entradas vendidas.");
             }
             FuncionRemoveResponse FuncionRemoveResponse = new FuncionRemoveResponse
             {
@@ -100,20 +91,6 @@ namespace Application.UseCase
             };
             return FuncionRemoveResponse;
         }
-
-
-
-
-
-
-
-
-
-
-        //public async Task<FuncionResponse> GetFuncionByID(int funcionID)
-        //{
-        //    return await FuncionQuery.GetFuncionByID(funcionID);
-        //}
 
     }
 }

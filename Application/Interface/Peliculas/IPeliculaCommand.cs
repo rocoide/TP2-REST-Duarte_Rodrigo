@@ -1,10 +1,10 @@
-﻿using Application.Model.Response;
+﻿using Application.Model.DTO;
 using Domain.Entity;
 
 namespace Application.Interface.Peliculas
 {
     public interface IPeliculaCommand
     {
-        Task<PeliculaResponseLong> updatePelicula(Pelicula pelicula);
+        Task<Pelicula?> UpdatePelicula(PeliculaDTO PeliculaDTO, int PeliculaId);
     }
 }
