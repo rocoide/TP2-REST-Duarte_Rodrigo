@@ -2,6 +2,7 @@
 using Application.Interface.Funciones;
 using Application.Interface.Tickets;
 using Application.Model.DTO;
+using Application.Model.Response;
 using Application.Model.Response.Funciones;
 using Application.Model.Response.Tickets;
 using Microsoft.AspNetCore.Mvc;
@@ -33,11 +34,11 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             }
             catch (Exception)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
-                    message = "Ingrese la fecha en un formato valido."
+                    Message = "Ingrese la fecha en un formato valido."
                 };
-                return BadRequest(ObjetoAnonimo);
+                return BadRequest(BadResponse);
             }
         }
 
@@ -51,19 +52,19 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             }
             catch (ConflicExcepcion Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return Conflict(ObjetoAnonimo);
+                return Conflict(BadResponse);
             }
             catch (Exception Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return BadRequest(ObjetoAnonimo);
+                return BadRequest(BadResponse);
             }
         }
 
@@ -74,23 +75,22 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             {
                 FuncionResponse FuncionResponse = await ServiceFunciones.GetFuncionById(id);
                 return Ok(FuncionResponse);
-
             }
             catch (FormatException Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return BadRequest(ObjetoAnonimo);
+                return BadRequest(BadResponse);
             }
             catch (ConflicExcepcion Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return NotFound(ObjetoAnonimo);
+                return NotFound(BadResponse);
             }
         }
 
@@ -104,27 +104,27 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             }
             catch (FormatException Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return BadRequest(ObjetoAnonimo);
+                return BadRequest(BadResponse);
             }
             catch (NotFoundExcepcion Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return NotFound(ObjetoAnonimo);
+                return NotFound(BadResponse);
             }
             catch (ConflicExcepcion Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return Conflict(ObjetoAnonimo);
+                return Conflict(BadResponse);
             }
         }
 
@@ -138,19 +138,19 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             }
             catch (FormatException)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = "Por favor ingrese un valor en formato numerico en cantidad."
                 };
-                return BadRequest(ObjetoAnonimo);
+                return BadRequest(BadResponse);
             }
             catch (NotFoundExcepcion Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return NotFound(ObjetoAnonimo);
+                return NotFound(BadResponse);
             }
         }
 
@@ -164,19 +164,19 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             }
             catch (NotFoundExcepcion Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return NotFound(ObjetoAnonimo);
+                return NotFound(BadResponse);
             }
             catch (Exception Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return BadRequest(ObjetoAnonimo);
+                return BadRequest(BadResponse);
             }
         }
 

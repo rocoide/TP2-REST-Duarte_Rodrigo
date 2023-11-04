@@ -1,6 +1,7 @@
 ﻿using Application.Excepcions;
 using Application.Interface.Peliculas;
 using Application.Model.DTO;
+using Application.Model.Response;
 using Application.Model.Response.Peliculas;
 using Application.Validation;
 using Microsoft.AspNetCore.Mvc;
@@ -29,19 +30,19 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             }
             catch (FormatException Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return BadRequest(ObjetoAnonimo);
+                return BadRequest(BadResponse);
             }
             catch (NotFoundExcepcion Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return NotFound(ObjetoAnonimo);
+                return NotFound(BadResponse);
             }
         }
 
@@ -59,27 +60,27 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
             }
             catch (FormatException Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return BadRequest(ObjetoAnonimo);
+                return BadRequest(BadResponse);
             }
             catch (NotFoundExcepcion Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return NotFound(ObjetoAnonimo);
+                return NotFound(BadResponse);
             }
             catch (ConflicExcepcion Ex)
             {
-                var ObjetoAnonimo = new
+                BadResponse BadResponse = new BadResponse
                 {
                     Message = Ex.Message
                 };
-                return Conflict(ObjetoAnonimo);
+                return Conflict(BadResponse);
             }
         }
 
