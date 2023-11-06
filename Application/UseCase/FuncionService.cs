@@ -5,6 +5,7 @@ using Application.Interface.Salas;
 using Application.Mapping;
 using Application.Model.DTO;
 using Application.Model.Response.Funciones;
+using Application.Validation;
 using Domain.Entity;
 
 namespace Application.UseCase
@@ -34,6 +35,10 @@ namespace Application.UseCase
 
         public async Task<FuncionResponse> AddFuncion(FuncionDTO FuncionDTO)
         {
+            if (!ValidarHora.validar(FuncionDTO.Horario))
+            {
+                throw new FormatException("El horario no se ingreso en un formato valido.");
+            }
             Sala? Sala = await SalaQuery.GetSalaById(FuncionDTO.Sala);
             if (Sala == null)
             {
