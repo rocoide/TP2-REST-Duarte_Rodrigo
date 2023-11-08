@@ -24,7 +24,6 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
 
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<FuncionResponse>), 200)]
         public async Task<IActionResult> GetFunciones(string? Titulo = null, string? Fecha = null, int? GeneroId = null)
         {
             try
@@ -84,7 +83,7 @@ namespace TP2_REST_Duarte_Rodrigo.Controllers
                 };
                 return BadRequest(BadResponse);
             }
-            catch (ConflicExcepcion Ex)
+            catch (NotFoundExcepcion Ex)
             {
                 BadResponse BadResponse = new BadResponse
                 {

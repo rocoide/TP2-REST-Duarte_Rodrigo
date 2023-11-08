@@ -1,4 +1,5 @@
 using Application.Interface.Funciones;
+using Application.Interface.Generos;
 using Application.Interface.Peliculas;
 using Application.Interface.Salas;
 using Application.Interface.Tickets;
@@ -38,8 +39,10 @@ builder.Services.AddTransient<ITicketQuery, TicketQuery>();
 
 builder.Services.AddTransient<ISalaQuery, SalaQuery>();
 
+builder.Services.AddTransient<IGeneroQuery, GeneroQuery>();
+
 builder.Services.AddCors(x => x.AddDefaultPolicy(c => c.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod()));
-//var Header = new HeaderOption();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

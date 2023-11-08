@@ -20,7 +20,7 @@ namespace Infrastructure.Query
                                                       .Include(m => m.Peliculas)
                                                         .ThenInclude(f => f.Generos)
                                                       .Include(m => m.Salas)
-                                                      .Where(s => (Titulo != null ? (s.Peliculas.Titulo == Titulo) : true) &&
+                                                      .Where(s => (Titulo != null ? (s.Peliculas.Titulo.Contains(Titulo)) : true) &&
                                                                   (Fecha != null ? (s.Fecha.Year == DateTime.Parse(Fecha).Year &&
                                                                                     s.Fecha.Month == DateTime.Parse(Fecha).Month &&
                                                                                     s.Fecha.Day == DateTime.Parse(Fecha).Day

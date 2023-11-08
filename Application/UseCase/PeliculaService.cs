@@ -1,4 +1,5 @@
 ﻿using Application.Excepcions;
+using Application.Interface.Generos;
 using Application.Interface.Peliculas;
 using Application.Mapping;
 using Application.Model.DTO;
@@ -11,11 +12,13 @@ namespace Application.UseCase
     {
         private readonly IPeliculaCommand PeliculaCommand;
         private readonly IPeliculaQuery PeliculaQuery;
+        private readonly IGeneroQuery GeneroQuery;
 
-        public PeliculaService(IPeliculaCommand PeliculaCommand, IPeliculaQuery PeliculaQuery)
+        public PeliculaService(IPeliculaCommand PeliculaCommand, IPeliculaQuery PeliculaQuery, IGeneroQuery GeneroQuery)
         {
             this.PeliculaCommand = PeliculaCommand;
             this.PeliculaQuery = PeliculaQuery;
+            this.GeneroQuery = GeneroQuery;
         }
 
         public async Task<PeliculaResponse> GetPeliculaById(int PeliculaId)
@@ -33,6 +36,11 @@ namespace Application.UseCase
 
         public async Task<PeliculaResponse> UpdatePelicula(PeliculaDTO PeliculaDTO, int PeliculaId)
         {
+            Genero? Genero = await GeneroQuery.GetGeneroById(PeliculaDTO.Genero);
+            if (Genero == null)
+            {
+                throw new FormatException("No se encontro un genero asociado al ID ingresado.");
+            }
             Pelicula? Pelicula = await PeliculaQuery.GetPeliculaById(PeliculaId);
             if (Pelicula == null)
             {
