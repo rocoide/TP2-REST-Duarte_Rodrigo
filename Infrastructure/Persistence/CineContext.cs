@@ -192,7 +192,7 @@ namespace Infrastructure.Persistence
                     PeliculaId = 10,
                     Titulo = "Casino",
                     Sinopsis = "Robert De Niro, Sharon Stone y Joe Pesci protagonizan la fascinante película de Martin Scorsese que le echa un vistazo a la manera en que la ambición ciega, la pasión candente y la codicia de 24 quilates derrumbaron el imperio de un casino de Las Vegas.",
-                    Poster = "https://th.bing.com/th/id/OIP.o9U2d0zadTrIXP6E1_Ew7AHaEK?pid=ImgDet&rs=1",
+                    Poster = "https://pics.filmaffinity.com/casino-348445329-large.jpg",
                     Trailer = "https://www.youtube.com/watch?v=EJXDMwGWhoA&ab_channel=Movieclips",
                     Genero = 1
                 },
@@ -225,7 +225,7 @@ namespace Infrastructure.Persistence
                     PeliculaId = 13,
                     Titulo = "8 noches de locura",
                     Sinopsis = "Comedia animada que sigue las andanzas de un joven que realiza servicios comunitarios tras ser arrestado durante las fiestas de fin de año.",
-                    Poster = "https://tinyurl.com/yyuasf93",
+                    Poster = "https://pics.filmaffinity.com/8_crazy_nights-470524560-mmed.jpg",
                     Trailer = "https://www.youtube.com/watch?v=q0Nsh8cb000&ab_channel=JaimeRodd",
                     Genero = 8
                 },
