@@ -217,10 +217,10 @@ namespace Infrastructure.Migrations
                         {
                             PeliculaId = 7,
                             Genero = 7,
-                            Poster = "https://th.bing.com/th/id/OIP.e8BVI2EbDHPGc8b7-UUqLAHaJQ?w=178&h=223&c=7&r=0&o=5&pid=1.7",
+                            Poster = "https://pics.filmaffinity.com/the_super_mario_bros_movie-521125124-large.jpg",
                             Sinopsis = "Dos hermanos plomeros, Mario y Luigi, caen por las alcantarillas y llegan a un mundo subterráneo mágico en el que deben enfrentarse al malvado Bowser para rescatar a la princesa Peach, quien ha sido forzada a aceptar casarse con él.",
                             Titulo = "Mario Bros",
-                            Trailer = "https://www.youtube.com/watch?v=SvJwEiy2Wok&ab_channel=SensaCineTRAILERS"
+                            Trailer = "https://www.youtube.com/embed/yPpazvJrHm0?si=8bw_ciQOG-1yDEKa"
                         },
                         new
                         {
@@ -238,7 +238,7 @@ namespace Infrastructure.Migrations
                             Poster = "https://pics.filmaffinity.com/the_last_samurai-270445769-large.jpg",
                             Sinopsis = "Tras la Guerra de Secesión, el Capitán Nathan Algren y el líder samurái Katsumoto se enfrentan a un Japón en transformación. El emperador japonés los une en un choque de culturas mientras Algren entrena a un nuevo ejército.",
                             Titulo = "El ultimo samurai",
-                            Trailer = "https://www.youtube.com/embed/-c74IrUQAoc?si=_j0htIcn9dO3-jxB"
+                            Trailer = "https://www.youtube.com/embed/59SgfBozyjQ?si=QoalUEVN2Mylio-n"
                         },
                         new
                         {
