@@ -1,5 +1,6 @@
 ﻿using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
+using static System.Net.WebRequestMethods;
 
 namespace Infrastructure.Persistence
 {
@@ -93,8 +94,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 1,
                     Titulo = "Avatar",
                     Sinopsis = "Jake Sully, ex-marine en Pandora, conoce a los Na'vi y se enamora de Neytiri. Enfrenta un dilema moral: ayudar en la extracción de un mineral o proteger a los Na'vi y su hogar.",
-                    Poster = "https://th.bing.com/th/id/OIP.NNDzj9c4s1ntnvDOwTDNagHaLH?w=115&h=180&c=7&r=0&o=5&pid=1.7",
-                    Trailer = "https://www.youtube.com/watch?v=AZS_d_hS2dM&ab_channel=20thCenturyStudiosEspa%C3%B1a",
+                    Poster = "https://pics.filmaffinity.com/avatar-208925608-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/AZS_d_hS2dM?si=B-ZQPUNuNGgUurNB",
                     Genero = 3
                 },
 
@@ -104,8 +105,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 2,
                     Titulo = "El aro",
                     Sinopsis = "Rachel, periodista, investiga una cinta maldita tras la muerte de su sobrina. Tras verla, recibe una llamada que le da 7 días para salvar su vida y la de su hijo.",
-                    Poster = "https://th.bing.com/th/id/OIP.jn0LXyPMWtNfegmiSMhsZgHaKL?w=129&h=180&c=7&r=0&o=5&pid=1.7",
-                    Trailer = "https://www.youtube.com/watch?v=3-1GGz_gTnQ&ab_channel=DigicineDistribuidora",
+                    Poster = "https://pics.filmaffinity.com/the_ring-712833488-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/gmiG3txcgis?si=zGQ4lWJEAOhs_M1d",
                     Genero = 10
                 },
 
@@ -115,8 +116,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 3,
                     Titulo = "The sword of the stranger",
                     Sinopsis = "En la era Sengoku, un ronin llamado Nanashi protege a Kotarou y su perro Tobimaru de una organización china. Se embarcan en una peligrosa aventura en medio del conflicto de los Estados.",
-                    Poster = "https://th.bing.com/th/id/OIP.8RmTep5x66mXiB7HiOqUUgHaLg?w=116&h=180&c=7&r=0&o=5&pid=1.7",
-                    Trailer = "https://tinyurl.com/3rdpbv3h",
+                    Poster = "https://pics.filmaffinity.com/stranger_mukoh_hadan-241452338-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/xlEIQKTLN3M?si=Suc8AjE8PaTrzi5d",
                     Genero = 2
                 },
 
@@ -126,8 +127,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 4,
                     Titulo = "Asesinato en el expreso de oriente",
                     Sinopsis = "Durante un trayecto del tren Orient-Express se produce un asesinato. Cuando una avalancha detiene el tren, el prestigioso detective Hércules Poirot sube al vehículo para investigar quién es el asesino, pero todos los pasajeros parecen sospechosos.",
-                    Poster = "https://th.bing.com/th/id/OIP.wqhKWgCaUmC5LAWP0auNzQHaLP?w=178&h=271&c=7&r=0&o=5&pid=1.7",
-                    Trailer = "https://www.youtube.com/watch?v=f8ne09GR8aE&ab_channel=20thCenturyStudiosEspa%C3%B1a",
+                    Poster = "https://pics.filmaffinity.com/murder_on_the_orient_express-328389244-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/JQQeJFn4xwE?si=yABg6asb-kyc_4KU",
                     Genero = 9
                 },
 
@@ -137,8 +138,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 5,
                     Titulo = "Shrek 2",
                     Sinopsis = "Cuando Shrek y la princesa Fiona regresan de su luna de miel, los padres de ella los invitan a visitar el reino de Muy Muy Lejano para celebrar la boda. Para Shrek, al que nunca abandona su fiel amigo Asno, esto constituye un gran problema.",
-                    Poster = "https://th.bing.com/th/id/OIP.sI0vbZwcYD1oEHt04j1vQwAAAA?w=115&h=180&c=7&r=0&o=5&pid=1.7",
-                    Trailer = "https://www.youtube.com/watch?v=xBxVgh-kgAI&ab_channel=JoyasDeLaAnimaci%C3%B3n",
+                    Poster = "https://pics.filmaffinity.com/shrek_2-288126730-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/V6X5ti4YlG8?si=zpOM27gg3KfA6w-t",
                     Genero = 7
                 },
 
@@ -148,8 +149,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 6,
                     Titulo = "El dictador",
                     Sinopsis = "Un tirano de África del Norte arriesga su vida para asegurar que la democracia nunca llegue al país al que mantiene oprimido.",
-                    Poster = "https://th.bing.com/th/id/OIP.Bq0l0fHXM3N9ieG_JyiuNwHaLH?w=115&h=180&c=7&r=0&o=5&pid=1.7",
-                    Trailer = "https://www.youtube.com/watch?v=i9qH93yZAdo&ab_channel=TrailersyEstrenos",
+                    Poster = "https://pics.filmaffinity.com/the_dictator-138905408-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/S8y9NTGPENc?si=Ow3fbboNUmP287Do",
                     Genero = 4
                 },
 
@@ -170,8 +171,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 8,
                     Titulo = "Caceria en Venecia",
                     Sinopsis = "Después de la II Guerra Mundial, Poirot vuelve a investigar en Venecia en una noche de terror y misterio. Cuando un invitado muere en una sesión de espiritismo, el detective retirado se sumerge en un oscuro enigma.",
-                    Poster = "https://th.bing.com/th/id/OIP.PwZP-r6lwxa7jqI9VHU7cwAAAA?w=123&h=180&c=7&r=0&o=5&pid=1.7",
-                    Trailer = "https://www.youtube.com/watch?v=JymKmSe5TOk&ab_channel=20thCenturyStudiosLA",
+                    Poster = "https://pics.filmaffinity.com/a_haunting_in_venice-814202842-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/p6JFBV0UOAE?si=qjFbPtLgrx4MNW0l",
                     Genero = 9
                 },
 
@@ -181,8 +182,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 9,
                     Titulo = "El ultimo samurai",
                     Sinopsis = "Tras la Guerra de Secesión, el Capitán Nathan Algren y el líder samurái Katsumoto se enfrentan a un Japón en transformación. El emperador japonés los une en un choque de culturas mientras Algren entrena a un nuevo ejército.",
-                    Poster = "https://th.bing.com/th/id/OIP.1SYaJrlCFCqwOq52VzLG-wHaLH?w=125&h=187&c=7&r=0&o=5&pid=1.7",
-                    Trailer = "https://www.youtube.com/watch?v=-c74IrUQAoc&ab_channel=DeTrailers",
+                    Poster = "https://pics.filmaffinity.com/the_last_samurai-270445769-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/-c74IrUQAoc?si=_j0htIcn9dO3-jxB",
                     Genero = 6
                 },
 
@@ -193,7 +194,7 @@ namespace Infrastructure.Persistence
                     Titulo = "Casino",
                     Sinopsis = "Robert De Niro, Sharon Stone y Joe Pesci protagonizan la fascinante película de Martin Scorsese que le echa un vistazo a la manera en que la ambición ciega, la pasión candente y la codicia de 24 quilates derrumbaron el imperio de un casino de Las Vegas.",
                     Poster = "https://pics.filmaffinity.com/casino-348445329-large.jpg",
-                    Trailer = "https://www.youtube.com/watch?v=EJXDMwGWhoA&ab_channel=Movieclips",
+                    Trailer = "https://www.youtube.com/embed/xbNR2kcyut4?si=9mEo22fNQmanmR63",
                     Genero = 1
                 },
 
@@ -203,8 +204,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 11,
                     Titulo = "El gran Gatsby",
                     Sinopsis = "Los años 20 nunca han estado mejor descritos que en esta romántica y suntuosa nueva versión del clásico de F. Scott Fitzgerald sobre la Era del Jazz.",
-                    Poster = "https://th.bing.com/th/id/OIP.IhQIQ8q8Bo9uhAWjgJoc0AHaK-?pid=ImgDet&rs=1",
-                    Trailer = "https://www.youtube.com/watch?v=tgx3mpSUwBA&ab_channel=WarnerBros.PicturesEspa%C3%B1a",
+                    Poster = "https://pics.filmaffinity.com/the_great_gatsby-737648170-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/tgx3mpSUwBA?si=jBV8YSxpfdHOCzJv",
                     Genero = 6
                 },
 
@@ -214,8 +215,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 12,
                     Titulo = "El lobo de wall street",
                     Sinopsis = "Un bróker que disfruta de un estilo de vida decadente y desenfrenado trata de eludir al FBI mientras él y sus compañeros se hacen ricos gracias a unos negocios turbios.",
-                    Poster = "https://th.bing.com/th/id/OIP.ZC32-wAQQGPVQ64Psduo2AHaLH?pid=ImgDet&rs=1",
-                    Trailer = "https://www.youtube.com/watch?v=DEMZSa0esCU&ab_channel=TrailersyEstrenos",
+                    Poster = "https://pics.filmaffinity.com/the_wolf_of_wall_street-675195906-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/DEMZSa0esCU?si=YASj53vD5mZJa8JD",
                     Genero = 6
                 },
 
@@ -225,8 +226,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 13,
                     Titulo = "8 noches de locura",
                     Sinopsis = "Comedia animada que sigue las andanzas de un joven que realiza servicios comunitarios tras ser arrestado durante las fiestas de fin de año.",
-                    Poster = "https://pics.filmaffinity.com/8_crazy_nights-470524560-mmed.jpg",
-                    Trailer = "https://www.youtube.com/watch?v=q0Nsh8cb000&ab_channel=JaimeRodd",
+                    Poster = "https://pics.filmaffinity.com/8_crazy_nights-470524560-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/q0Nsh8cb000?si=Y3Lzn-nvtOR_rAbY",
                     Genero = 8
                 },
 
@@ -234,10 +235,10 @@ namespace Infrastructure.Persistence
                 new Pelicula
                 {
                     PeliculaId = 14,
-                    Titulo = "El asesinato de jesse james",
-                    Sinopsis = "Jesse James planea su próximo gran robo pero su cabeza tiene precio por varios crímenes anteriores: quien capture a Jesse recibirá una gran recompensa. Varias personas le persiguen, incluso es traicionado por un miembro de su propia banda.",
-                    Poster = "https://th.bing.com/th/id/OIP.LjuYRh2pKrTATwL-Mou12gAAAA?pid=ImgDet&rs=1",
-                    Trailer = "https://www.youtube.com/watch?v=twadXH9PGgE&ab_channel=LeandroC",
+                    Titulo = "Creep",
+                    Sinopsis = "Aaron acepta un trabajo que promete 1.000 dólares al día por participar en un rodaje. En una cabaña perdida en el bosque conocerá a Josef, el sujeto de la película que debe filmar. Las cosas se complicarán.",
+                    Poster = "https://pics.filmaffinity.com/creep_aka_peachfuzz-908632647-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/Gp7tBypjwDo?si=ec6ynOAy5z9fQCwh",
                     Genero = 6
                 },
 
@@ -247,8 +248,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 15,
                     Titulo = "Fragmentado",
                     Sinopsis = "La película sigue a Kevin, quien tiene 23 personalidades debido a su trastorno de identidad disociativo. Secuestra a tres adolescentes y espera la aparición de su personalidad más temible, La Bestia.",
-                    Poster = "https://th.bing.com/th/id/OIP.M8qy4VxDSysV7wg_GscNEwHaKk?w=118&h=180&c=7&r=0&o=5&pid=1.7",
-                    Trailer = "https://www.youtube.com/watch?v=3fQ82KWRRfo&ab_channel=CineHome",
+                    Poster = "https://pics.filmaffinity.com/split-172094905-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/3fQ82KWRRfo?si=elqswZsGW2EA4qk6",
                     Genero = 6
                 },
 
@@ -258,8 +259,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 16,
                     Titulo = "El gato con botas: El último deseo",
                     Sinopsis = "El Gato con Botas descubre que su pasión por la aventura le ha pasado factura: ha consumido ocho de sus nueve vidas, por ello emprende un viaje épico para encontrar el mítico Último Deseo y restaurar sus nueve vidas",
-                    Poster = "https://pics.filmaffinity.com/puss_in_boots_the_last_wish-897078202-mmed.jpg",
-                    Trailer = "https://www.youtube.com/watch?v=QaiUm8jNiCk&ab_channel=UniversalSpain",
+                    Poster = "https://pics.filmaffinity.com/puss_in_boots_the_last_wish-897078202-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/QaiUm8jNiCk?si=1C3824sACM2z6oJa",
                     Genero = 2
                 },
 
@@ -269,8 +270,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 17,
                     Titulo = "Lilo & Stich",
                     Sinopsis = "Lilo, una niña hawaiana solitaria, encuentra a Stitch, un experimento alienígena en la Tierra. A través del amor y la unión familiar de \"ohana,\" transforman sus vidas y enseñan el valor del cuidado y la amistad.",
-                    Poster = "https://pics.filmaffinity.com/lilo_stitch-502239805-mmed.jpg",
-                    Trailer = "https://www.youtube.com/watch?v=9OAC55UWAQs&ab_channel=RottenTomatoesClassicTrailers",
+                    Poster = "https://pics.filmaffinity.com/lilo_stitch-502239805-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/_WbTe5hjSkE?si=8akglF_dbD1fC0_i",
                     Genero = 2
                 },
 
@@ -280,8 +281,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 18,
                     Titulo = "Dog: Una aventura salvaje",
                     Sinopsis = "El ranger del ejército Briggs debe llevar a Lulu, un perro de guerra, de Washington a Arizona para un emotivo funeral, enfrentando sus traumas y problemas emocionales en el camino.",
-                    Poster = "https://pics.filmaffinity.com/dog-263685812-mmed.jpg",
-                    Trailer = "https://www.youtube.com/watch?v=LJcVhteNnSY&ab_channel=TrailersInSpanish",
+                    Poster = "https://pics.filmaffinity.com/dog-263685812-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/boykOMsSjmQ?si=2KzjNHAVG2ClJ3fd",
                     Genero = 6
                 },
 
@@ -291,8 +292,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 19,
                     Titulo = "WALL•E",
                     Sinopsis = "En el año 2800, WALL•E, un robot de limpieza en un planeta Tierra devastado, conoce a EVE, una exploradora robot. Juntos emprenden una emocionante aventura galáctica, cambiando sus vidas para siempre.",
-                    Poster = "https://pics.filmaffinity.com/walloe-973488527-mmed.jpg",
-                    Trailer = "https://www.youtube.com/watch?v=CZ1CATNbXg0&ab_channel=RottenTomatoesClassicTrailers",
+                    Poster = "https://pics.filmaffinity.com/walloe-973488527-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/qF7p4lZ00RA?si=nIIF4PG8T7hJJaxt",
                     Genero = 2
                 },
 
@@ -302,8 +303,8 @@ namespace Infrastructure.Persistence
                     PeliculaId = 20,
                     Titulo = "Happy Feet",
                     Sinopsis = "Comedia familiar que narra la historia de unos pingüinos en la Antártida. Para atraer a su pareja los pingüinos deben entonar una canción, pero uno de ellos no sabe cantar, pero es un gran bailarín de claqué.",
-                    Poster = "https://pics.filmaffinity.com/happy_feet-637452144-mmed.jpg",
-                    Trailer = "https://www.youtube.com/watch?v=aIBsnOyJB7Y&ab_channel=WarnerMoviesOnDemand",
+                    Poster = "https://pics.filmaffinity.com/happy_feet-637452144-large.jpg",
+                    Trailer = "https://www.youtube.com/embed/aIBsnOyJB7Y?si=LCUmnYiKaaZfqPEf",
                     Genero = 2
                 }
             );
